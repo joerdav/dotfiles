@@ -1,4 +1,8 @@
-call plug#begin(stdpath('data') + '/plugged')
+if has('win32') || has('win64')
+	call plug#begin('~/AppData/Local/nvim/plugged')
+else
+	call plug#begin(stdpath('data') + '/plugged')
+endif
 
 "fzf
 Plug 'junegunn/fzf'
@@ -9,6 +13,8 @@ Plug 'dense-analysis/ale'
 Plug 'mxw/vim-jsx'
 Plug 'neovimhaskell/haskell-vim'
 Plug 'tpope/vim-fugitive'
+Plug 'lepture/vim-jinja'
+
 
 "last place
 Plug 'farmergreg/vim-lastplace'
