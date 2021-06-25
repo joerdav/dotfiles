@@ -35,10 +35,10 @@ Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'dkprice/vim-easygrep'
 Plug 'voldikss/vim-floaterm'
 Plug 'mattn/vim-goimports'
-Plug 'Joe-Davidson1802/templ.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'puremourning/vimspector'
 
+Plug 'Joe-Davidson1802/templ.vim'
 
 call plug#end()
 
