@@ -9,6 +9,7 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 
 Plug 'dense-analysis/ale'
+Plug 'tpope/vim-vinegar'
 "langs
 Plug 'mxw/vim-jsx'
 Plug 'neovimhaskell/haskell-vim'
