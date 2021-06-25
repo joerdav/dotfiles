@@ -1,0 +1,73 @@
+{
+  "http.proxy": "",
+  "http.proxyAuthorization": null,
+  "http.proxyStrictSSL": false,
+  "languageserver": {
+    "templ": {
+      "command": "templ",
+      "args": ["lsp"],
+      "filetypes": ["templ"],
+      "trace.server": "verbose"
+    }
+  },
+  "yaml.schemas": {
+    "https://raw.githubusercontent.com/awslabs/goformation/master/schema/cloudformation.schema.json": "/*",
+    "https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.17.0-standalone-strict/all.json": "/*"
+  },
+  "yaml.customTags": [
+    "!And",
+    "!And sequence",
+    "!If",
+    "!If sequence",
+    "!Not",
+    "!Not sequence",
+    "!Equals",
+    "!Equals sequence",
+    "!Or",
+    "!Or sequence",
+    "!FindInMap",
+    "!FindInMap sequence",
+    "!Base64",
+    "!Join",
+    "!Join sequence",
+    "!Cidr",
+    "!Ref",
+    "!Sub",
+    "!Sub sequence",
+    "!GetAtt",
+    "!GetAZs",
+    "!ImportValue",
+    "!ImportValue sequence",
+    "!Select",
+    "!Select sequence",
+    "!Split",
+    "!Split sequence"
+  ],
+  "yaml.format.enable": false,
+  "yaml.validate": false,
+  "cSpell.userWords": [
+    "Hotwire",
+    "Ulti",
+    "dkprice",
+    "exts",
+    "floaterm",
+    "funcobj",
+    "goimports",
+    "gotos",
+    "honza",
+    "janko",
+    "junegunn",
+    "mattn",
+    "microfrontends",
+    "neoclide",
+    "newrw",
+    "omnisharp",
+    "pwsh",
+    "ruanyl",
+    "templ",
+    "townk",
+    "tpope",
+    "ultisnips",
+    "voldikss"
+  ]
+}
