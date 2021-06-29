@@ -1,6 +1,21 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
+# Use Nix.
+export PATH="/run/current-system/sw/bin:$PATH"
+if [ ! -f $HOME/.tmux.conf ]; then
+    ln -s $HOME/dotfiles/.tmux.conf $HOME/.tmux.conf
+fi
+if [ ! -f $HOME/.zshrc ]; then
+    ln -s $HOME/dotfiles/.zshrc $HOME/.zshrc
+fi
+if [ ! -f $HOME/.nixpkgs/darwin-configuration.nix ]; then
+    ln -s $HOME/dotfiles/.nixpkgs $HOME/.nixpkgs
+fi
+if [ ! -f $HOME/.config/nvim/coc-settings.json ]; then
+    ln -s $HOME/dotfiles/coc-settings.json $HOME/.config/nvim/coc-settings.json
+fi
+
 export ZSH="/home/joe/.oh-my-zsh"
 export VISUAL=vim
 export EDITOR="$VISUAL"
@@ -8,6 +23,9 @@ source /usr/share/nvm/init-nvm.sh
 export PATH="$(yarn global bin):$PATH"
 export PATH="$(go env GOPATH)/bin:$PATH"
 export PATH="$PATH:/home/joe/bin"
+
+fpath=(~/dotfiles/zsh-completion $fpath)
+autoload -Uz compinit && compinit
 
 export SPACESHIP_PROMPT_ORDER=(
   time          # Time stamps section
