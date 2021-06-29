@@ -8,6 +8,10 @@
       "args": ["lsp"],
       "filetypes": ["templ"],
       "trace.server": "verbose"
+    },
+    "dotnet": {
+      "command": "omnisharp",
+      "filetypes": ["cs"]
     }
   },
   "yaml.schemas": {
