@@ -34,6 +34,7 @@ in
       pkgs.gitAndTools.gh
       pkgs.gnupg
       pkgs.go
+	  pkgs.google-cloud-sdk
       pkgs.gopls
       pkgs.goreleaser
       pkgs.goimports
