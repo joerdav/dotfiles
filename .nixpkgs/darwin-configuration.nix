@@ -7,6 +7,7 @@ let
   ]);
 
   air = pkgs.callPackage ./air.nix {};
+  slides = pkgs.callPackage ./slides.nix {};
 
 in
 
@@ -19,6 +20,7 @@ in
   environment.systemPackages =
     [
       air
+      slides
       python-with-global-packages
       pkgs.ag
       pkgs.aerc
