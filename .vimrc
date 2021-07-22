@@ -82,6 +82,13 @@ inoremap jk <Esc>
 tnoremap <leader>jk <C-\><C-n>:buffer #<CR>
 nnoremap <leader>jk <C-\><C-n>:buffer #<CR>
 nnoremap <leader>lg :FloatermNew --disposable --autoclose=2 --width=0.9 --height=0.9 lazygit<CR>
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
 " Disable banner on newrw file view
 let g:netrw_banner = 0
 " Use the expandable list style.
