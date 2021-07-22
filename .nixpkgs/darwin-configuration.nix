@@ -7,6 +7,7 @@ let
   ]);
 
   air = pkgs.callPackage ./air.nix {};
+  slides = pkgs.callPackage ./slides.nix {};
 
 in
 
@@ -19,9 +20,11 @@ in
   environment.systemPackages =
     [
       air
+      slides
       python-with-global-packages
       pkgs.ag
       pkgs.aerc
+      pkgs.alacritty
       pkgs.asciinema
       pkgs.ssm-session-manager-plugin
       pkgs.docker
@@ -44,6 +47,7 @@ in
       pkgs.imagemagick
       pkgs.jq
       pkgs.lynx
+      pkgs.lazygit
       pkgs.mutt
       pkgs.nmap
       pkgs.nodejs-14_x

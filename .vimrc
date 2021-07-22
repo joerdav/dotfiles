@@ -1,7 +1,7 @@
 if has('win32') || has('win64')
 	call plug#begin('~/AppData/Local/nvim/plugged')
 else
-	call plug#begin(stdpath('data') + '/plugged')
+	call plug#begin('~/.config/nvim/plugged')
 endif
 
 "fzf
