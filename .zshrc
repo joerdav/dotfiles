@@ -1,4 +1,5 @@
 export PATH="/run/current-system/sw/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 if [ ! -f $HOME/.tmux.conf ]; then
     ln -s $HOME/dotfiles/.tmux.conf $HOME/.tmux.conf
 fi
@@ -18,6 +19,7 @@ export EDITOR="$VISUAL"
 export PATH="$(yarn global bin):$PATH"
 export PATH="$(go env GOPATH)/bin:$PATH"
 export PATH="$PATH:$HOME/bin"
+export ZSH_THEME=robbyrussell
 
 fpath=(~/dotfiles/zsh-completion $fpath)
 autoload -Uz compinit && compinit
@@ -25,6 +27,13 @@ autoload -Uz compinit && compinit
 plugins=(git archlinux dotnet git-flow git-prompt node npm please vscode)
 
 source $ZSH/oh-my-zsh.sh
+
+alias watch="ag -l | entr"
+export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/joe/.sdkman"

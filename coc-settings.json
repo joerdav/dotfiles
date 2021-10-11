@@ -12,11 +12,17 @@
     "dotnet": {
       "command": "omnisharp",
       "filetypes": ["cs"]
+    },
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod"],
+      "filetypes": ["go"]
     }
   },
   "yaml.schemas": {
     "https://raw.githubusercontent.com/awslabs/goformation/master/schema/cloudformation.schema.json": "/*",
-    "https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.17.0-standalone-strict/all.json": "/*"
+    "https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.17.0-standalone-strict/all.json": "/*",
+    "https://json.schemastore.org/github-action": ".github/*"
   },
   "yaml.customTags": [
     "!And",
