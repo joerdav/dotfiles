@@ -1,4 +1,3 @@
-lua <<EOF
 local cmd = vim.cmd
 local fn = vim.fn
 local g = vim.g
@@ -42,8 +41,11 @@ map("i", "<A-3>", "#", {silent = true, noremap = true})
 map("n", "<leader>f", "<cmd>Format<cr>", {noremap = true})
 
 --- prev buffer
-map("n", "<leader>jk", "<C-\\><C-n><cmd>buffer #<cr>", {noremap = true})
-map("t", "<leader>jk", "<C-\\><C-n><cmd>buffer #<cr>", {noremap = true})
+map("n", "<leader>jk", "<C-\><C-n><cmd>buffer #<cr>", {noremap = true})
+map("t", "<leader>jk", "<C-\><C-n><cmd>buffer #<cr>", {noremap = true})
+
+--- lazygit
+map("n", "<leader>lg", "<cmd>FloatermNew --disposable --autoclose=2 --width=0.9 --height=0.9 lazygit<cr>", {noremap = true})
 
 --- move line
 map("n", "<A-j>", "<cmd>m .+1<cr>==", {noremap = true})
@@ -317,4 +319,5 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
-EOF
+
+

@@ -1,26 +1,19 @@
-
 { config, pkgs, ... }:
 
 let
-
-  python-with-global-packages = pkgs.python3.withPackages(ps: with ps; [
+  python-with-global-packages = pkgs.python3.withPackages (ps: with ps; [
     pip
   ]);
-
-  air = pkgs.callPackage ./air.nix {};
-  slides = pkgs.callPackage ./slides.nix {};
-  adr-tools = pkgs.callPackage ./adr-tools.nix {};
-  
-
-  specificRevision = import (builtins.fetchTarball {
-    name = "nixos-unstable-2021-08-18";
-    url = "https://github.com/nixos/nixpkgs/archive/51e3fe53462eb72aa038f2b47735acea8b1fcae2.tar.gz";
-    # Hash obtained using `nix-prefetch-url --unpack <url>`
-    sha256 = "018njpwyhzwxlm8l4rc80qakzgyfqq9yzmr2nimv0033rvjcvxa4";
-  }) {};
-  neovim5 = specificRevision.neovim;
-
-   coverage = pkgs.vimUtils.buildVimPlugin {
+  symbols-outline = pkgs.vimUtils.buildVimPlugin {
+    name = "symbols-outline";
+    src = pkgs.fetchFromGitHub {
+      owner = "simrat39";
+      repo = "symbols-outline.nvim";
+      rev = "a1bbef84b7c7240f88092c57732c5b8eb6f48234";
+      sha256 = "0vai0p365hwjs8vzadfgx66ax6jdx6pivfzzjr5v63c83kc466hq";
+    };
+  };
+  coverage = pkgs.vimUtils.buildVimPlugin {
     name = "vim-coverage";
     src = pkgs.fetchFromGitHub {
       owner = "ruanyl";
@@ -40,7 +33,7 @@ let
     };
     meta.homepage = "https://github.com/hrsh7th/nvim-cmp/";
   };
-    cmp-buffer = pkgs.vimUtils.buildVimPluginFrom2Nix {
+  cmp-buffer = pkgs.vimUtils.buildVimPluginFrom2Nix {
     pname = "cmp-buffer";
     version = "2021-09-02";
     src = pkgs.fetchFromGitHub {
@@ -51,7 +44,7 @@ let
     };
     meta.homepage = "https://github.com/hrsh7th/cmp-buffer/";
   };
-    cmp-vsnip = pkgs.vimUtils.buildVimPluginFrom2Nix {
+  cmp-vsnip = pkgs.vimUtils.buildVimPluginFrom2Nix {
     pname = "cmp-vsnip";
     version = "2021-08-25";
     src = pkgs.fetchFromGitHub {
@@ -62,7 +55,7 @@ let
     };
     meta.homepage = "https://github.com/hrsh7th/cmp-vsnip/";
   };
-    cmp-nvim-lsp = pkgs.vimUtils.buildVimPluginFrom2Nix {
+  cmp-nvim-lsp = pkgs.vimUtils.buildVimPluginFrom2Nix {
     pname = "cmp-nvim-lsp";
     version = "2021-09-30";
     src = pkgs.fetchFromGitHub {
@@ -73,7 +66,17 @@ let
     };
     meta.homepage = "https://github.com/hrsh7th/cmp-nvim-lsp/";
   };
-   cht-sh-vim = pkgs.vimUtils.buildVimPlugin {
+  instant-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "instant-nvim";
+    version = "2021-09-30";
+    src = pkgs.fetchFromGitHub {
+      owner = "jbyuki";
+      repo = "instant.nvim";
+      rev = "c883f0bc9e580b12e67291092027b5174d18e724";
+      sha256 = "0lcq2ma2jr646r67lmpwcwdr3l6z0va5452g74qyzi80hv3ypgff";
+    };
+  };
+  cht-sh-vim = pkgs.vimUtils.buildVimPlugin {
     name = "cht-sh-vim";
     src = pkgs.fetchFromGitHub {
       owner = "dbeniamine";
@@ -82,7 +85,6 @@ let
       sha256 = "0imk50zibfqafylz654hm8czdalc8kyqbmayv6bj1x1a1ryk02kb";
     };
   };
-
   easygrep = pkgs.vimUtils.buildVimPlugin {
     name = "vim-easygrep";
     src = pkgs.fetchFromGitHub {
@@ -92,7 +94,6 @@ let
       sha256 = "0y2p5mz0d5fhg6n68lhfhl8p4mlwkb82q337c22djs4w5zyzggbc";
     };
   };
-
   vimBuilder = pkgs.vimUtils.buildVimPlugin {
     name = "builder.vim";
     src = pkgs.fetchFromGitHub {
@@ -102,7 +103,6 @@ let
       sha256 = "1synvwz7xqy68wb45rdy5lscp2z19wdd7wnp07smylv4jcnlya51";
     };
   };
-  
   formatterNvim = pkgs.vimUtils.buildVimPlugin {
     name = "formatter.nvim";
     src = pkgs.fetchFromGitHub {
@@ -112,8 +112,6 @@ let
       sha256 = "15jkrypcd3fa6vcz035yvcpd1rfrxcwvp93mqnihm0g1a74klrql";
     };
   };
-
-
   vimTempl = pkgs.vimUtils.buildVimPlugin {
     name = "templ.vim";
     src = pkgs.fetchFromGitHub {
@@ -121,16 +119,6 @@ let
       repo = "templ.vim";
       rev = "2d1ca014c360a46aade54fc9b94f065f1deb501a";
       sha256 = "1bc3p0i3jsv7cbhrsxffnmf9j3zxzg6gz694bzb5d3jir2fysn4h";
-    };
-  };
-
-  vimZettel = pkgs.vimUtils.buildVimPlugin {
-    name = "vim-zettel";
-    src = pkgs.fetchFromGitHub {
-      owner = "michal-h21";
-      repo = "vim-zettel";
-      rev = "929d90eec62e6f693c2702d2b6f76a93f2f1689d";
-      sha256 = "07ma6ylvvyncr24pinvlybygddjdi2r835x7q8c52mnz96dcmz6m";
     };
   };
   vimwikiSync = pkgs.vimUtils.buildVimPlugin {
@@ -144,33 +132,28 @@ let
   };
 in
 {
-
   nixpkgs.config.allowUnfree = true;
-  environment.variables = { EDITOR = "kak"; };
-  
+  environment.variables = { EDITOR = "nvim"; };
+
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
       url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
     }))
   ];
-  
+
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages =
     [
-      air
-      slides
       python-with-global-packages
-      adr-tools
-      pkgs.ag
       pkgs.aerc
+      pkgs.ag
       pkgs.alacritty
       pkgs.asciinema
       pkgs.aws-vault
       pkgs.bats
       pkgs.ccls
       pkgs.cht-sh
-      pkgs.ssm-session-manager-plugin
       pkgs.docker
       pkgs.dotnetCorePackages.sdk_3_1
       pkgs.entr
@@ -182,94 +165,97 @@ in
       pkgs.gitAndTools.gh
       pkgs.gnupg
       pkgs.go
+      pkgs.go-swagger
+      pkgs.goimports
       pkgs.gomodifytags
       pkgs.google-cloud-sdk
       pkgs.gopls
       pkgs.goreleaser
-      pkgs.goimports
       pkgs.graphviz
       pkgs.htop
       pkgs.hugo
       pkgs.imagemagick
       pkgs.jq
-      pkgs.lynx
       pkgs.lazygit
+      pkgs.lima
       pkgs.lua
       pkgs.luarocks
+      pkgs.lynx
       pkgs.mutt
+      pkgs.ngrok
+      pkgs.nixpkgs-fmt
       pkgs.nmap
-      pkgs.nodejs-14_x
+      pkgs.nodePackages.node2nix
       pkgs.nodePackages.prettier
       pkgs.nodePackages.typescript
-      pkgs.nodePackages.node2nix
+      pkgs.nodejs-14_x
       pkgs.oh-my-zsh
       pkgs.pass
       pkgs.ripgrep
+      pkgs.ssm-session-manager-plugin
+      pkgs.stylua
       pkgs.terraform
-      pkgs.tmux
-      pkgs.twtxt
       pkgs.tmate
+      pkgs.tmux
       pkgs.tree
+      pkgs.twtxt
       pkgs.unzip
       pkgs.urlscan
       pkgs.vscode
       pkgs.wget
       pkgs.wrk
       pkgs.yarn
-      pkgs.stylua
       pkgs.zip
-	
       (
-	neovim5.override {
-	  vimAlias = true;
-	  configure = {
-	    packages.myPlugins = with pkgs.vimPlugins; {
-	      start = [
-            cht-sh-vim
-            fzf-vim
-            vimwiki
-            vimwikiSync
-            vim-lastplace
-            vim-nix
-            trouble-nvim
-            nvim-web-devicons
-            neoformat
-            vim-jsx-typescript
-            vim-go
-            nerdcommenter #preservim/nerdcommenter
-            vim-sleuth #tpope/vim-sleuth
-            vim-surround #tpope/vim-surround
-            vim-test #janko/vim-test
-            coverage #ruanyl/coverage.vim
-            vim-visual-multi #mg979/vim-visual-multi
-            easygrep #dkprice/vim-easygrep
-            nvim-lspconfig #https://neovim.io/doc/user/lsp.html#lsp-extension-example
-            nvim-cmp
-            cmp-nvim-lsp
-            cmp-buffer
-            cmp-vsnip
-            vim-vsnip
-            friendly-snippets
-            vimTempl
-            nvim-treesitter
-            vim-floaterm
-            vim-nong-theme
-            vim-vinegar
-            vim-abolish
-            formatterNvim
-	      ];
-	      opt = [];
-	    };
-	    customRC = builtins.readFile ./../dotfiles/.vimrc;
-	  };
-	}
+        pkgs.neovim.override {
+          vimAlias = true;
+          configure = {
+            packages.myPlugins = with pkgs.vimPlugins; {
+              start = [
+                cht-sh-vim
+                cmp-buffer
+                cmp-nvim-lsp
+                cmp-vsnip
+                coverage #ruanyl/coverage.vim
+                easygrep #dkprice/vim-easygrep
+                formatterNvim
+                friendly-snippets
+                fzf-vim
+                instant-nvim
+                nerdcommenter #preservim/nerdcommenter
+                nvim-cmp
+                nvim-lspconfig #https://neovim.io/doc/user/lsp.html#lsp-extension-example
+                nvim-treesitter
+                nvim-web-devicons
+                symbols-outline
+                trouble-nvim
+                vim-abolish
+                vim-dispatch
+                vim-go
+                vim-jsx-typescript
+                vim-lastplace
+                vim-nix
+                vim-sleuth #tpope/vim-sleuth
+                vim-surround #tpope/vim-surround
+                vim-test #janko/vim-test
+                vim-vinegar
+                vim-visual-multi #mg979/vim-visual-multi
+                vim-vsnip
+                vimTempl
+                vimwiki
+                vimwikiSync
+              ];
+              opt = [ ];
+            };
+            customRC = builtins.readFile ./../dotfiles/.vimrc;
+          };
+        }
       )
     ];
 
-  programs.zsh.enable = true;  # default shell on catalina
+  programs.zsh.enable = true; # default shell on catalina
 
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 4;
 }
-
