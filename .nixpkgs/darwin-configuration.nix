@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 let
+  xc = pkgs.callPackage ./xc.nix { };
   python-with-global-packages = pkgs.python3.withPackages (ps: with ps; [
     pip
   ]);
@@ -22,58 +23,14 @@ let
       sha256 = "1vr6ylppwd61rj0l7m6xb0scrld91wgqm0bvnxs54b20vjbqcsap";
     };
   };
-  nvim-cmp = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "nvim-cmp";
-    version = "2021-10-06";
-    src = pkgs.fetchFromGitHub {
-      owner = "hrsh7th";
-      repo = "nvim-cmp";
-      rev = "a39f72a4634e4bb05371a6674e3e9218cbfc6b20";
-      sha256 = "04ksgg491nmyy7khdid9j45pv65yp7ksa0q7cr7gvqrh69v55daj";
-    };
-    meta.homepage = "https://github.com/hrsh7th/nvim-cmp/";
-  };
-  cmp-buffer = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "cmp-buffer";
-    version = "2021-09-02";
-    src = pkgs.fetchFromGitHub {
-      owner = "hrsh7th";
-      repo = "cmp-buffer";
-      rev = "5dde5430757696be4169ad409210cf5088554ed6";
-      sha256 = "0fdywbv4b0z1kjnkx9vxzvc4cvjyp9mnyv4xi14zndwjgf1gmcwl";
-    };
-    meta.homepage = "https://github.com/hrsh7th/cmp-buffer/";
-  };
-  cmp-vsnip = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "cmp-vsnip";
-    version = "2021-08-25";
-    src = pkgs.fetchFromGitHub {
-      owner = "hrsh7th";
-      repo = "cmp-vsnip";
-      rev = "1588c35bf8f637e8f5287477f31895781858f970";
-      sha256 = "0q3z0f7d53cbqidx8qd3z48b46a83l5ay54iw525w22j1kki3aaw";
-    };
-    meta.homepage = "https://github.com/hrsh7th/cmp-vsnip/";
-  };
-  cmp-nvim-lsp = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    pname = "cmp-nvim-lsp";
-    version = "2021-09-30";
-    src = pkgs.fetchFromGitHub {
-      owner = "hrsh7th";
-      repo = "cmp-nvim-lsp";
-      rev = "f93a6cf9761b096ff2c28a4f0defe941a6ffffb5";
-      sha256 = "02x4jp79lll4fm34x7rjkimlx32gfp2jd1kl6zjwszbfg8wziwmx";
-    };
-    meta.homepage = "https://github.com/hrsh7th/cmp-nvim-lsp/";
-  };
   instant-nvim = pkgs.vimUtils.buildVimPluginFrom2Nix {
     pname = "instant-nvim";
     version = "2021-09-30";
     src = pkgs.fetchFromGitHub {
       owner = "jbyuki";
       repo = "instant.nvim";
-      rev = "c883f0bc9e580b12e67291092027b5174d18e724";
-      sha256 = "0lcq2ma2jr646r67lmpwcwdr3l6z0va5452g74qyzi80hv3ypgff";
+      rev = "c02d72267b12130609b7ad39b76cf7f4a3bc9554";
+      sha256 = "1wk43a8lnwkvfl0m2bxxgidbj4p03322xvn5j1wsl678xw1gdypc";
     };
   };
   cht-sh-vim = pkgs.vimUtils.buildVimPlugin {
@@ -135,11 +92,11 @@ in
   nixpkgs.config.allowUnfree = true;
   environment.variables = { EDITOR = "nvim"; };
 
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-    }))
-  ];
+  #nixpkgs.overlays = [
+  #(import (builtins.fetchTarball {
+  #url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+  #}))
+  #];
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
@@ -209,6 +166,10 @@ in
       (
         pkgs.neovim.override {
           vimAlias = true;
+          withPython3 = true;
+          extraPython3Packages = (ps: with ps; [
+            pynvim
+          ]);
           configure = {
             packages.myPlugins = with pkgs.vimPlugins; {
               start = [
@@ -222,6 +183,7 @@ in
                 friendly-snippets
                 fzf-vim
                 instant-nvim
+                markdown-preview-nvim
                 nerdcommenter #preservim/nerdcommenter
                 nvim-cmp
                 nvim-lspconfig #https://neovim.io/doc/user/lsp.html#lsp-extension-example
@@ -231,6 +193,7 @@ in
                 trouble-nvim
                 vim-abolish
                 vim-dispatch
+                vim-glsl
                 vim-go
                 vim-jsx-typescript
                 vim-lastplace
@@ -251,6 +214,7 @@ in
           };
         }
       )
+      xc
     ];
 
   programs.zsh.enable = true; # default shell on catalina

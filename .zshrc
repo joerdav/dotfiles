@@ -18,6 +18,9 @@ fi
 if [ ! -f $HOME/.nixpkgs/darwin-configuration.nix ]; then
     ln -s $HOME/dotfiles/.nixpkgs $HOME/.nixpkgs
 fi
+if [ ! -d /Applications/Alacritty.app ]; then
+    cp -r /run/current-system/Applications/* /Applications/ >/dev/null 2>&1
+fi
 if [ ! -f $HOME/.config/nvim/coc-settings.json ]; then
     ln -s $HOME/dotfiles/coc-settings.json $HOME/.config/nvim/coc-settings.json
 fi
@@ -58,3 +61,6 @@ export NVM_DIR="$HOME/.nvm"
 export SDKMAN_DIR="/home/joe/.sdkman"
 [[ -s "/home/joe/.sdkman/bin/sdkman-init.sh" ]] && source "/home/joe/.sdkman/bin/sdkman-init.sh"
 #zprof
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C xc xc

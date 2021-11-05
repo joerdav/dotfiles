@@ -37,7 +37,7 @@ opt.signcolumn = "yes"
 --- instant
 g.instant_username = "joe-davidson1802"
 --- set leader
-g.mapleader = "<space>"
+g.mapleader = " "
 --- netrw settings
 g.netrw_banner = 0
 g.netrw_liststyle = 1
@@ -47,12 +47,20 @@ g.coverage_sign_covered = "⦿"
 g.coverage_interval = 5000
 g.coverage_show_covered = 1
 g.coverage_show_uncovered = 1
-
+--- vimwiki
+g.vimwiki_list = {
+            {
+                path = '~/wiki',
+                syntax = 'markdown',
+                ext = '.md',
+            }
+}
 -- Mappings
 --- fzf
 map("n", "<C-g>", "<cmd>GFiles<cr>", {silent = true, noremap = true})
 map("n", "<C-p>", "<cmd>Files<cr>", {silent = true, noremap = true})
 map("n", "<C-b>", "<cmd>Buffers<cr>", {silent = true, noremap = true})
+map("n", "<C-x>", "<cmd>Commands<cr>", {silent = true, noremap = true})
 
 --- quick escape insert
 map("i", "jk", "<esc>", {silent = true, noremap = true})
@@ -72,8 +80,8 @@ map("n", "<A-j>", "<cmd>m .+1<cr>==", {noremap = true})
 map("n", "<A-k>", "<cmd>m.-2<cr>==", {noremap = true})
 map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", {noremap = true})
 map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", {noremap = true})
-map("v", "<A-j>", "<cmd>m '>+1<cr>gv=gv", {noremap = true})
-map("v", "<A-k>", "<cmd>m '<-2<cr>gv=gv", {noremap = true})
+map("v", "<A-j>", ":m '>+1<cr>gv=gv", {noremap = true})
+map("v", "<A-k>", ":m '<-2<cr>gv=gv", {noremap = true})
 
 --- symbols
 map("n", "<leader>s", "<cmd>SymbolsOutline<cr>", {noremap = true})
@@ -117,33 +125,18 @@ snippet = {
   vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` user.
 end,
 },
-  mapping = {
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    ['<Tab>'] = function(core, fallback)
-    if vim.fn.pumvisible() == 1 then
-      vim.fn.feedkeys(t('<C-n>'), 'n')
-    elseif luasnip.expand_or_jumpable() then
-      vim.fn.feedkeys(t('<Plug>luasnip-expand-or-jump'), '')
-    elseif not check_back_space() then
-      cmp.mapping.complete()(core, fallback)
-    else
-      vim.cmd(':>')
-    end
-  end,
-    ['<S-Tab>'] = function(core, fallback)
-    if vim.fn.pumvisible() == 1 then
-      vim.fn.feedkeys(t('<C-p>'), 'n')
-    elseif luasnip.jumpable(-1) then
-      vim.fn.feedkeys(t('<Plug>luasnip-jump-prev'), '')
-    else
-      vim.cmd(':<')
-    end
-  end,
-},
+    mapping = {
+      ['<C-p>'] = cmp.mapping.select_prev_item(),
+      ['<C-n>'] = cmp.mapping.select_next_item(),
+      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.close(),
+      ['<CR>'] = cmp.mapping.confirm({
+        behavior = cmp.ConfirmBehavior.Insert,
+        select = true,
+      })
+    },
   sources = {
     { name = 'nvim_lsp' },
     { name = 'vsnip' },
