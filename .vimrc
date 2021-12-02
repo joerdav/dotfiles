@@ -31,6 +31,7 @@ opt.splitbelow = true
 opt.fileencoding = "UTF-8"
 -- TODO: syntax on
 opt.number = true
+opt.relativenumber = true
 opt.signcolumn = "yes"
 
 -- globals
@@ -56,6 +57,9 @@ g.vimwiki_list = {
             }
 }
 -- Mappings
+--- multi
+map("n", "<M-Down>", [[<cmd>call vm#commands#add_cursor_down(0, v:count1)<cr>]], {silent = false, noremap = true})
+map("n", "<M-Up>", [[<cmd>call vm#commands#add_cursor_up(0, v:count1)<cr>]], {silent = false, noremap = true})
 --- fzf
 map("n", "<C-g>", "<cmd>GFiles<cr>", {silent = true, noremap = true})
 map("n", "<C-p>", "<cmd>Files<cr>", {silent = true, noremap = true})
@@ -196,6 +200,35 @@ augroup GO_LSP
   autocmd BufWritePre *.go :silent! lua org_imports(3000)
 augroup END
 ]], true)
+require('rust-tools').setup({
+    tools = { -- rust-tools options
+        autoSetHints = true,
+        hover_with_actions = true,
+        inlay_hints = {
+            show_parameter_hints = false,
+            parameter_hints_prefix = "",
+            other_hints_prefix = "",
+        },
+    },
+
+    -- all the opts to send to nvim-lspconfig
+    -- these override the defaults set by rust-tools.nvim
+    -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
+    server = {
+        -- on_attach is a callback called when the language server attachs to the buffer
+        -- on_attach = on_attach,
+        settings = {
+            -- to enable rust-analyzer settings visit:
+            -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
+            ["rust-analyzer"] = {
+                -- enable clippy on save
+                checkOnSave = {
+                    command = "clippy"
+                },
+            }
+        }
+    },
+})
 local servers = { 'templ', 'gopls', 'ccls', 'cmake', 'tsserver' }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
@@ -232,6 +265,14 @@ filetype = {
         }
     end
     },
+  rust = {
+    function()
+      return {
+        exe = "rustfmt",
+        stdin = true
+        }
+    end
+    },
   go = {
     function()
       return {
@@ -240,7 +281,6 @@ filetype = {
         }
     end
     },
-
   }
 })
 vim.api.nvim_exec([[

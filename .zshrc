@@ -5,7 +5,7 @@ export ZSH="$HOME/.oh-my-zsh"
 export VISUAL=vim
 export EDITOR="$VISUAL"
 export PATH="$(yarn global bin):$PATH"
-export PATH="$(go env GOPATH)/bin:$PATH"
+export PATH="$PATH:$(go env GOPATH)/bin"
 export PATH="$PATH:$HOME/bin"
 export ZSH_THEME=eastwood
 

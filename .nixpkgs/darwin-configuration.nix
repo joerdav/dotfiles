@@ -2,6 +2,7 @@
 
 let
   xc = pkgs.callPackage ./xc.nix { };
+  templ = pkgs.callPackage ./templ.nix { };
   python-with-global-packages = pkgs.python3.withPackages (ps: with ps; [
     pip
   ]);
@@ -141,6 +142,7 @@ in
       pkgs.mutt
       pkgs.ngrok
       pkgs.nixpkgs-fmt
+      pkgs.nix-prefetch
       pkgs.nmap
       pkgs.nodePackages.node2nix
       pkgs.nodePackages.prettier
@@ -149,6 +151,8 @@ in
       pkgs.oh-my-zsh
       pkgs.pass
       pkgs.ripgrep
+      pkgs.rustfmt
+      pkgs.rust-analyzer
       pkgs.ssm-session-manager-plugin
       pkgs.stylua
       pkgs.terraform
@@ -189,6 +193,7 @@ in
                 nvim-lspconfig #https://neovim.io/doc/user/lsp.html#lsp-extension-example
                 nvim-treesitter
                 nvim-web-devicons
+                rust-tools-nvim
                 symbols-outline
                 trouble-nvim
                 vim-abolish
