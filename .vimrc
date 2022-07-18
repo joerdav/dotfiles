@@ -145,22 +145,6 @@ map("n", "t<C-s>", "<cmd>TestSuite<cr>", {silent = true, noremap = true})
 map("n", "t<C-l>", "<cmd>TestLast<cr>", {silent = true, noremap = true})
 map("n", "t<C-g>", "<cmd>TestVisit<cr>", {silent = true, noremap = true})
 
--- org_imports
-function org_imports(wait_ms)
-  local params = vim.lsp.util.make_range_params()
-  params.context = {only = {"source.organizeImports"}}
-  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, wait_ms)
-  for _, res in pairs(result or {}) do
-    for _, r in pairs(res.result or {}) do
-      if r.edit then
-        vim.lsp.util.apply_workspace_edit(r.edit)
-      else
-        vim.lsp.buf.execute_command(r.command)
-      end
-    end
-  end
-end
-
 lsp_signature_cfg = {
   debug = false, -- set to true to enable debug logging
   log_path = "debug_log_file_path", -- debug log path
@@ -310,15 +294,31 @@ configs.templ = {
     settings = {};
     };
   }
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
-vim.api.nvim_exec([[
-augroup GO_LSP
-  autocmd!
-  autocmd BufWritePre *.go :silent! lua vim.lsp.buf.formatting_sync()
-  autocmd BufWritePre *.go :silent! lua org_imports(3000)
-augroup END
-]], true)
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.go" },
+  callback = function()
+	  vim.lsp.buf.formatting_sync(nil, 3000)
+  end,
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = { "*.go" },
+	callback = function()
+		local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
+		params.context = {only = {"source.organizeImports"}}
+
+		local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+		for _, res in pairs(result or {}) do
+			for _, r in pairs(res.result or {}) do
+				if r.edit then
+					vim.lsp.util.apply_workspace_edit(r.edit, vim.lsp.util._get_offset_encoding())
+				else
+					vim.lsp.buf.execute_command(r.command)
+				end
+			end
+		end
+	end,
+})
 require('rust-tools').setup({
     tools = {
       autoSetHints = false
