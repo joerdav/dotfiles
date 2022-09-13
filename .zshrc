@@ -22,14 +22,8 @@ fi
 if [ ! -f $HOME/.nixpkgs/darwin-configuration.nix ]; then
     ln -s $HOME/dotfiles/.nixpkgs $HOME/.nixpkgs
 fi
-if [ ! -d /Applications/Alacritty.app ]; then
-    cp -r /run/current-system/Applications/* /Applications/ >/dev/null 2>&1
-fi
 if [ ! -d /Applications/kitty.app ]; then
     cp -r /run/current-system/Applications/* /Applications/ >/dev/null 2>&1
-fi
-if [ ! -f $HOME/.config/nvim/coc-settings.json ]; then
-    ln -s $HOME/dotfiles/coc-settings.json $HOME/.config/nvim/coc-settings.json
 fi
 
 # Add pass autocomplete.
@@ -70,6 +64,8 @@ source $ZSH/oh-my-zsh.sh
 alias watch="ag -l | entr"
 alias es="exercism submit"
 alias j="dir=\$(find ~/src -maxdepth 3 -name .git -type d -prune -exec dirname {} \; | fzf +m) && cd \"\$dir\""
+alias lg="nvim -c :G"
+alias lazygit="nvim -c :G"
 
 notif() {
   osascript -e "display notification \"$1\""

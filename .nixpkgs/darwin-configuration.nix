@@ -181,7 +181,6 @@ in
       pkgs.htop
       pkgs.jq
       pkgs.kitty
-      pkgs.lazygit
       pkgs.lua
       pkgs.luarocks
       pkgs.ngrok
@@ -245,6 +244,7 @@ in
                 trouble-nvim
                 vim-abolish
                 vim-dispatch
+                vim-fugitive
                 vim-glsl
                 vim-grammarous
                 vim-jsx-typescript
@@ -261,7 +261,7 @@ in
               ];
               opt = [ ];
             };
-            customRC = builtins.readFile ./../dotfiles/.vimrc;
+            customRC = "lua require('init')";
           };
         }
         )
