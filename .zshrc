@@ -13,19 +13,6 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
  --color=info:#ffffff,prompt:#ffffff,pointer:#ffffff
  --color=marker:#ffffff,spinner:#ffffff,header:#ffffff'
 
-if [ ! -f $HOME/.tmux.conf ]; then
-    ln -s $HOME/dotfiles/.tmux.conf $HOME/.tmux.conf
-fi
-if [ ! -f $HOME/.zshrc ]; then
-    ln -s $HOME/dotfiles/.zshrc $HOME/.zshrc
-fi
-if [ ! -f $HOME/.nixpkgs/darwin-configuration.nix ]; then
-    ln -s $HOME/dotfiles/.nixpkgs $HOME/.nixpkgs
-fi
-if [ ! -d /Applications/kitty.app ]; then
-    cp -r /run/current-system/Applications/* /Applications/ >/dev/null 2>&1
-fi
-
 # Add pass autocomplete.
 fpath=(~/dotfiles/zsh-completion $fpath)
 autoload -Uz compinit

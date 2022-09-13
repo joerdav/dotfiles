@@ -267,6 +267,31 @@ in
         )
         xc
       ];
+      system.activationScripts.postUserActivation.text = ''
+        echo ":: -> Running vim activationScript..."
+        # Handle mutable configs
+        if [ ! -e "$HOME/.config/nvim/" ]; then
+          echo "Linking vim folders..."
+          ln -sf $HOME/dotfiles/config/nvim $HOME/.config/nvim
+        fi
+        if [ ! -f $HOME/.tmux.conf ]; then
+            echo "Linking tmux conf..."
+            ln -s $HOME/dotfiles/.tmux.conf $HOME/.tmux.conf
+        fi
+        if [ ! -f $HOME/.zshrc ]; then
+            echo "Linking zshrc..."
+            ln -s $HOME/dotfiles/.zshrc $HOME/.zshrc
+        fi
+        if [ ! -f $HOME/.nixpkgs/darwin-configuration.nix ]; then
+            echo "Linking nixpkgs..."
+            ln -s $HOME/dotfiles/.nixpkgs $HOME/.nixpkgs
+        fi
+        if [ ! -d /Applications/kitty.app ]; then
+            echo "Linking kitty..."
+            cp -r /run/current-system/Applications/* /Applications/ >/dev/null 2>&1
+        fi
+
+      '';
 
       programs.zsh.enable = true; # default shell on catalina
 
