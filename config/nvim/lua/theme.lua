@@ -1,87 +1,86 @@
 local cmd = vim.cmd
 
-cmd[[hi clear]]
-cmd[[set background=dark]]
-cmd[[hi Normal cterm=NONE ctermfg=255 ctermbg=16 gui=NONE guifg=#ffffff guibg=#000000]]
-cmd[[hi Underlined cterm=underline ctermfg=255 ctermbg=16 gui=underline guifg=#ffffff guibg=#000000]]
-cmd[[hi DiagnosticHint cterm=NONE ctermfg=10 ctermbg=16 gui=NONE guifg=#00af00 guibg=#000000]]
-cmd[[hi Constant cterm=NONE ctermfg=252 ctermbg=16 gui=NONE guifg=#d0d0d0 guibg=#000000]]
-cmd[[hi Comment cterm=NONE ctermfg=240 ctermbg=16 gui=NONE guifg=#585858 guibg=#000000]]
-cmd[[hi Error cterm=NONE ctermfg=255 ctermbg=88 gui=NONE guifg=#eeeeee guibg=#870000]]
-cmd[[hi ErrorMsg cterm=NONE ctermfg=255 ctermbg=124 gui=NONE guifg=#eeeeee guibg=#af0000]]
-cmd[[hi Search cterm=NONE ctermfg=245 ctermbg=236 gui=NONE guifg=#8a8a8a guibg=#303030]]
-cmd[[hi IncSearch cterm=reverse ctermfg=255 ctermbg=245 gui=reverse guifg=#eeeeee guibg=#8a8a8a]]
-cmd[[hi DiffChange cterm=NONE ctermfg=160 ctermbg=255 gui=NONE guifg=#d70000 guibg=#eeeeee]]
-cmd[[hi DiffText cterm=bold ctermfg=250 ctermbg=196 gui=bold guifg=#bcbcbc guibg=#ff0000]]
-cmd[[hi SignColumn cterm=NONE ctermfg=124 ctermbg=240 gui=NONE guifg=#af0000 guibg=#585858]]
-cmd[[hi SpellBad cterm=undercurl ctermfg=255 ctermbg=88 gui=undercurl guifg=#eeeeee guibg=#870000]]
-cmd[[hi SpellCap cterm=NONE ctermfg=255 ctermbg=124 gui=NONE guifg=#eeeeee guibg=#af0000]]
-cmd[[hi SpellRare cterm=NONE ctermfg=124 ctermbg=16 gui=NONE guifg=#af0000 guibg=#000000]]
-cmd[[hi WildMenu cterm=NONE ctermfg=240 ctermbg=255 gui=NONE guifg=#585858 guibg=#eeeeee]]
-cmd[[hi Pmenu cterm=NONE ctermfg=255 ctermbg=240 gui=NONE guifg=#eeeeee guibg=#585858]]
-cmd[[hi PmenuThumb cterm=NONE ctermfg=232 ctermbg=240 gui=NONE guifg=#080808 guibg=#585858]]
-cmd[[hi SpecialKey cterm=NONE ctermfg=16 ctermbg=255 gui=NONE guifg=#000000 guibg=#eeeeee]]
-cmd[[hi MatchParen cterm=NONE ctermfg=16 ctermbg=240 gui=NONE guifg=#000000 guibg=#585858]]
-cmd[[hi CursorLine cterm=NONE ctermfg=NONE ctermbg=233 gui=NONE guifg=NONE guibg=#121212]]
-cmd[[hi StatusLine cterm=bold,reverse ctermfg=245 ctermbg=16 gui=bold,reverse guifg=#8a8a8a guibg=#000000]]
-cmd[[hi StatusLineNC cterm=reverse ctermfg=236 ctermbg=16 gui=reverse guifg=#303030 guibg=#000000]]
-cmd[[hi Visual cterm=reverse ctermfg=250 ctermbg=16 gui=reverse guifg=#bcbcbc guibg=#000000]]
-cmd[[hi TermCursor cterm=reverse ctermfg=NONE ctermbg=NONE gui=reverse guifg=NONE guibg=NONE]]
-cmd[[hi! link Boolean Normal]]
-cmd[[hi! link String Normal]]
-cmd[[hi! link Constant Normal]]
-cmd[[hi! link Keyword Normal]]
-cmd[[hi! link Number Normal]]
-cmd[[hi! link Delimiter Normal]]
-cmd[[hi! link Identifier Normal]]
-cmd[[hi! link Title Normal]]
-cmd[[hi! link Debug Normal]]
-cmd[[hi! link Exception Normal]]
-cmd[[hi! link FoldColumn Normal]]
-cmd[[hi! link Macro Normal]]
-cmd[[hi! link ModeMsg Normal]]
-cmd[[hi! link MoreMsg Normal]]
-cmd[[hi! link Question Normal]]
-cmd[[hi! link Conditional Keyword]]
-cmd[[hi! link Statement Keyword]]
-cmd[[hi! link Operator Keyword]]
-cmd[[hi! link Structure Keyword]]
-cmd[[hi! link Function Keyword]]
-cmd[[hi! link Include Keyword]]
-cmd[[hi! link Type Keyword]]
-cmd[[hi! link Typedef Keyword]]
-cmd[[hi! link Todo Keyword]]
-cmd[[hi! link Label Keyword]]
-cmd[[hi! link Define Keyword]]
-cmd[[hi! link DiffAdd Keyword]]
-cmd[[hi! link diffAdded Keyword]]
-cmd[[hi! link diffCommon Keyword]]
-cmd[[hi! link Directory Keyword]]
-cmd[[hi! link PreCondit Keyword]]
-cmd[[hi! link PreProc Keyword]]
-cmd[[hi! link Repeat Keyword]]
-cmd[[hi! link Special Keyword]]
-cmd[[hi! link SpecialChar Keyword]]
-cmd[[hi! link StorageClass Keyword]]
-cmd[[hi! link SpecialComment String]]
-cmd[[hi! link CursorLineNr String]]
-cmd[[hi! link Character Number]]
-cmd[[hi! link Float Number]]
-cmd[[hi! link Tag Number]]
-cmd[[hi! link Folded Number]]
-cmd[[hi! link WarningMsg Number]]
-cmd[[hi! link iCursor SpecialKey]]
-cmd[[hi! link SpellLocal SpellCap]]
-cmd[[hi! link LineNr Comment]]
-cmd[[hi! link NonText Comment]]
-cmd[[hi! link DiffDelete Comment]]
-cmd[[hi! link diffRemoved Comment]]
-cmd[[hi! link PmenuSbar Visual]]
-cmd[[hi! link PmenuSel Visual]]
-cmd[[hi! link VisualNOS Visual]]
-cmd[[hi! link VertSplit Visual]]
-cmd[[hi! link Cursor StatusLine]]
-cmd[[hi! link rstEmphasis SpellRare]]
-cmd[[hi! link diffChanged DiffChange]]
-cmd[[hi! link LspCodeLens DiagnosticHint]]
-
+cmd([[hi clear]])
+cmd([[set background=dark]])
+cmd([[hi Normal cterm=NONE ctermfg=255 ctermbg=16 gui=NONE guifg=#ffffff guibg=#000000]])
+cmd([[hi Underlined cterm=underline ctermfg=255 ctermbg=16 gui=underline guifg=#ffffff guibg=#000000]])
+cmd([[hi DiagnosticHint cterm=NONE ctermfg=10 ctermbg=16 gui=NONE guifg=#00af00 guibg=#000000]])
+cmd([[hi Constant cterm=NONE ctermfg=252 ctermbg=16 gui=NONE guifg=#d0d0d0 guibg=#000000]])
+cmd([[hi Comment cterm=NONE ctermfg=240 ctermbg=16 gui=NONE guifg=#585858 guibg=#000000]])
+cmd([[hi Error cterm=NONE ctermfg=255 ctermbg=88 gui=NONE guifg=#eeeeee guibg=#870000]])
+cmd([[hi ErrorMsg cterm=NONE ctermfg=255 ctermbg=124 gui=NONE guifg=#eeeeee guibg=#af0000]])
+cmd([[hi Search cterm=NONE ctermfg=245 ctermbg=236 gui=NONE guifg=#8a8a8a guibg=#303030]])
+cmd([[hi IncSearch cterm=reverse ctermfg=255 ctermbg=245 gui=reverse guifg=#eeeeee guibg=#8a8a8a]])
+cmd([[hi DiffChange cterm=NONE ctermfg=160 ctermbg=255 gui=NONE guifg=#d70000 guibg=#eeeeee]])
+cmd([[hi DiffText cterm=bold ctermfg=250 ctermbg=196 gui=bold guifg=#bcbcbc guibg=#ff0000]])
+cmd([[hi SignColumn cterm=NONE ctermfg=124 ctermbg=240 gui=NONE guifg=#af0000 guibg=#585858]])
+cmd([[hi SpellBad cterm=undercurl ctermfg=255 ctermbg=88 gui=undercurl guifg=#eeeeee guibg=#870000]])
+cmd([[hi SpellCap cterm=NONE ctermfg=255 ctermbg=124 gui=NONE guifg=#eeeeee guibg=#af0000]])
+cmd([[hi SpellRare cterm=NONE ctermfg=124 ctermbg=16 gui=NONE guifg=#af0000 guibg=#000000]])
+cmd([[hi WildMenu cterm=NONE ctermfg=240 ctermbg=255 gui=NONE guifg=#585858 guibg=#eeeeee]])
+cmd([[hi Pmenu cterm=NONE ctermfg=255 ctermbg=240 gui=NONE guifg=#eeeeee guibg=#585858]])
+cmd([[hi PmenuThumb cterm=NONE ctermfg=232 ctermbg=240 gui=NONE guifg=#080808 guibg=#585858]])
+cmd([[hi SpecialKey cterm=NONE ctermfg=16 ctermbg=255 gui=NONE guifg=#000000 guibg=#eeeeee]])
+cmd([[hi MatchParen cterm=NONE ctermfg=16 ctermbg=240 gui=NONE guifg=#000000 guibg=#585858]])
+cmd([[hi CursorLine cterm=NONE ctermfg=NONE ctermbg=233 gui=NONE guifg=NONE guibg=#121212]])
+cmd([[hi StatusLine cterm=bold,reverse ctermfg=245 ctermbg=16 gui=bold,reverse guifg=#8a8a8a guibg=#000000]])
+cmd([[hi StatusLineNC cterm=reverse ctermfg=236 ctermbg=16 gui=reverse guifg=#303030 guibg=#000000]])
+cmd([[hi Visual cterm=reverse ctermfg=250 ctermbg=16 gui=reverse guifg=#bcbcbc guibg=#000000]])
+cmd([[hi TermCursor cterm=reverse ctermfg=NONE ctermbg=NONE gui=reverse guifg=NONE guibg=NONE]])
+cmd([[hi! link Boolean Normal]])
+cmd([[hi! link String Normal]])
+cmd([[hi! link Constant Normal]])
+cmd([[hi! link Keyword Normal]])
+cmd([[hi! link Number Normal]])
+cmd([[hi! link Delimiter Normal]])
+cmd([[hi! link Identifier Normal]])
+cmd([[hi! link Title Normal]])
+cmd([[hi! link Debug Normal]])
+cmd([[hi! link Exception Normal]])
+cmd([[hi! link FoldColumn Normal]])
+cmd([[hi! link Macro Normal]])
+cmd([[hi! link ModeMsg Normal]])
+cmd([[hi! link MoreMsg Normal]])
+cmd([[hi! link Question Normal]])
+cmd([[hi! link Conditional Keyword]])
+cmd([[hi! link Statement Keyword]])
+cmd([[hi! link Operator Keyword]])
+cmd([[hi! link Structure Keyword]])
+cmd([[hi! link Function Keyword]])
+cmd([[hi! link Include Keyword]])
+cmd([[hi! link Type Keyword]])
+cmd([[hi! link Typedef Keyword]])
+cmd([[hi! link Todo Keyword]])
+cmd([[hi! link Label Keyword]])
+cmd([[hi! link Define Keyword]])
+cmd([[hi! link DiffAdd Keyword]])
+cmd([[hi! link diffAdded Keyword]])
+cmd([[hi! link diffCommon Keyword]])
+cmd([[hi! link Directory Keyword]])
+cmd([[hi! link PreCondit Keyword]])
+cmd([[hi! link PreProc Keyword]])
+cmd([[hi! link Repeat Keyword]])
+cmd([[hi! link Special Keyword]])
+cmd([[hi! link SpecialChar Keyword]])
+cmd([[hi! link StorageClass Keyword]])
+cmd([[hi! link SpecialComment String]])
+cmd([[hi! link CursorLineNr String]])
+cmd([[hi! link Character Number]])
+cmd([[hi! link Float Number]])
+cmd([[hi! link Tag Number]])
+cmd([[hi! link Folded Number]])
+cmd([[hi! link WarningMsg Number]])
+cmd([[hi! link iCursor SpecialKey]])
+cmd([[hi! link SpellLocal SpellCap]])
+cmd([[hi! link LineNr Comment]])
+cmd([[hi! link NonText Comment]])
+cmd([[hi! link DiffDelete Comment]])
+cmd([[hi! link diffRemoved Comment]])
+cmd([[hi! link PmenuSbar Visual]])
+cmd([[hi! link PmenuSel Visual]])
+cmd([[hi! link VisualNOS Visual]])
+cmd([[hi! link VertSplit Visual]])
+cmd([[hi! link Cursor StatusLine]])
+cmd([[hi! link rstEmphasis SpellRare]])
+cmd([[hi! link diffChanged DiffChange]])
+cmd([[hi! link LspCodeLens DiagnosticHint]])

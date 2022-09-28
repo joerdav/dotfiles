@@ -147,6 +147,7 @@ in
           #symbols-outline
           trouble-nvim
           vim-abolish
+          vim-eunuch
           vim-dispatch
           vim-fugitive
           vim-glsl

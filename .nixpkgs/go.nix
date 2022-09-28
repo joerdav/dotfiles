@@ -1,4 +1,4 @@
-{ pkgs, stdenv, fetchurl }:
+{ pkgs, stdenv, fetchurl, ... }:
 
 let
   toGoKernel = platform:
@@ -31,14 +31,14 @@ let
   toGoPlatform = platform: "${toGoKernel platform}-${toGoCPU platform}";
 
   platform = toGoPlatform stdenv.hostPlatform;
-in
+in 
 stdenv.mkDerivation {
-  pname = "go";
-  version = version;
-  src = fetchurl {
-    url = "https://golang.org/dl/go${version}.${platform}.tar.gz";
-    sha256 = hashes.${platform} or (throw "Missing Go bootstrap hash for platform ${platform}");
-  };
-  builder = ./go-install.sh;
-  system = builtins.currentSystem;
+    pname = "go";
+    version = version;
+    src = fetchurl {
+      url = "https://golang.org/dl/go${version}.${platform}.tar.gz";
+      sha256 = hashes.${platform} or (throw "Missing Go bootstrap hash for platform ${platform}");
+    };
+    builder = ./go-install.sh;
+    system = builtins.currentSystem;
 }
