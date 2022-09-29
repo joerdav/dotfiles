@@ -137,6 +137,7 @@ configs.templ = {
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = { "*.go" },
 	callback = function()
+		vim.lsp.buf.formatting_sync(nil, 1000)
 		local params = vim.lsp.util.make_range_params()
 		params.context = { only = { "source.organizeImports" } }
 		local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 1000)

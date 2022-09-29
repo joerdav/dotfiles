@@ -62,9 +62,9 @@ alias lg="nvim -c :G"
 alias lazygit="nvim -c :G"
 
 cw() {
-  group=$(aws-vault exec $1 -- saw groups | fzf +m)
-  echo "aws-vault exec $1 -- saw watch --expand $group"
-  aws-vault exec $1 -- saw watch --expand $group
+  group=$(saw groups | fzf +m)
+  echo "saw watch --expand $group"
+  saw watch --expand $group
 }
 notif() {
   osascript -e "display notification \"$1\""
