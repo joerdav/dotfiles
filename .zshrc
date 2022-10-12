@@ -60,11 +60,12 @@ alias es="exercism submit"
 alias j="dir=\$(find ~/src -maxdepth 3 -name .git -type d -prune -exec dirname {} \; | fzf +m) && cd \"\$dir\""
 alias lg="nvim -c :G"
 alias lazygit="nvim -c :G"
+alias mate="kitty --config ~/.config/kitty/kittymate.conf"
 
 cw() {
-  group=$(saw groups | fzf +m)
+  group=$(aws-vault exec $1 -- saw groups | fzf +m)
   echo "saw watch --expand $group"
-  saw watch --expand $group
+  aws-vault exec $1 -- saw watch --expand $group
 }
 notif() {
   osascript -e "display notification \"$1\""

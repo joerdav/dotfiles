@@ -1,0 +1,60 @@
+{ pkgs, ... }:
+
+{
+  environment.systemPackages = with pkgs; [
+    asciinema
+    aws-vault
+    capnproto
+    ccls
+    delta
+    discord
+    entr
+    exercism
+    ffmpeg
+    fzf
+    gdb
+    gh
+    git
+    gitAndTools.gh
+    gnupg
+    gomodifytags
+    google-cloud-sdk
+    gopls
+    goreleaser
+    gotools
+    graphviz
+    gv
+    html-tidy
+    htop
+    jq
+    kitty
+    lua
+    luarocks
+    ngrok
+    nix-prefetch
+    nixpkgs-fmt
+    nmap
+    nodePackages.node2nix
+    nodePackages.prettier
+    nodePackages.typescript
+    nodejs-14_x
+    oh-my-zsh
+    pass
+    protobuf
+    ripgrep
+    rust-analyzer
+    rustfmt
+    silver-searcher
+    ssm-session-manager-plugin
+    stylua
+    tmate
+    tmux
+    tree
+    unzip
+    vscode
+    wget
+    wrk
+    yarn
+    zip
+  ];
+}
