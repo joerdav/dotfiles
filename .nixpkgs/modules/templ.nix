@@ -13,7 +13,7 @@ let
       sha256 = "1m865kbpbpw7w64awh1b915xzqw4hz5mj46jdf7jaf3zvqrm30d7";
     };
 
-    vendorSha256 = lib.fakeSha256;
+    vendorSha256 = "CEY50Db35Bwc5LtXlzbsh1uuSRxruy8tM8J6z04qSAQ=";
   };
 in
 {
