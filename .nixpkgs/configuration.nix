@@ -35,7 +35,7 @@ let
         echo "Linking zshrc..."
         ln -s ${homepath}/dotfiles/.zshrc ${homepath}/.zshrc
     fi
-    if [ ! -f ${homepath}/.zshrc ]; then
+    if [ ! -f ${homepath}/.oh-my-zsh ]; then
         echo "Linking omz..."
         ln -sf ${homepath}/dotfiles/.oh-my-zsh ${homepath}/.oh-my-zsh
     fi
