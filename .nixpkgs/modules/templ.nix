@@ -9,7 +9,7 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "a-h";
       repo = "templ";
-      rev = "v0.2.196";
+      rev = "v0.2.186";
       sha256 = "1m865kbpbpw7w64awh1b915xzqw4hz5mj46jdf7jaf3zvqrm30d7";
     };
 
