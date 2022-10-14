@@ -35,7 +35,7 @@ let
         echo "Linking zshrc..."
         ln -s ${homepath}/dotfiles/.zshrc ${homepath}/.zshrc
     fi
-  `` + pkgs.lib.optionalString pkgs.stdenv.isDarwin ``
+  '' + pkgs.lib.optionalString pkgs.stdenv.isDarwin ''
     if [ ! -f ${homepath}/.nixpkgs/darwin-configuration.nix ]; then
         echo "Linking nixpkgs..."
         ln -s ${homepath}/dotfiles/.nixpkgs ${homepath}/.nixpkgs
