@@ -9,7 +9,7 @@ let
       owner = "joerdav";
       repo = "xc";
       rev = "v0.0.110";
-      sha256 = "00n4mf3rjgz93zx9l495b7h68kfi3yw7sqg85vdwvik5f9np8dcb";
+      sha256 = "0rpn2cq7hf0wi9x06bmsic8cp5v7ipkfdy1pgi0ivhqgyqabszv2";
     };
     vendorSha256 = "1ryb8m407rijrwlxcpkwyayjf1raxi2qw4ndpjsi12q1bjhx0y33";
   };
