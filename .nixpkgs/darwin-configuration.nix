@@ -19,6 +19,7 @@ let
       self = self.python3;
     };
   };
+  homepath = if pkgs.stdenv.isDarwin then "$HOME" else "/home/joerdav";
 in
 {
   nixpkgs.config.allowUnfree = true;
@@ -37,21 +38,21 @@ in
   system.activationScripts.postUserActivation.text = ''
     echo ":: -> Running vim activationScript..."
     # Handle mutable configs
-    if [ ! -e "$HOME/.config/nvim/" ]; then
+    if [ ! -e "${homepath}/.config/nvim/" ]; then
       echo "Linking vim folders..."
-      ln -sf $HOME/dotfiles/config/nvim $HOME/.config/nvim
+      ln -sf ${homepath}/dotfiles/config/nvim ${homepath}/.config/nvim
     fi
-    if [ ! -f $HOME/.tmux.conf ]; then
+    if [ ! -f ${homepath}/.tmux.conf ]; then
         echo "Linking tmux conf..."
-        ln -s $HOME/dotfiles/.tmux.conf $HOME/.tmux.conf
+        ln -s ${homepath}/dotfiles/.tmux.conf ${homepath}/.tmux.conf
     fi
-    if [ ! -f $HOME/.zshrc ]; then
+    if [ ! -f ${homepath}/.zshrc ]; then
         echo "Linking zshrc..."
-        ln -s $HOME/dotfiles/.zshrc $HOME/.zshrc
+        ln -s ${homepath}/dotfiles/.zshrc ${homepath}/.zshrc
     fi
-    if [ ! -f $HOME/.nixpkgs/darwin-configuration.nix ]; then
+    if [ ! -f ${homepath}/.nixpkgs/darwin-configuration.nix ]; then
         echo "Linking nixpkgs..."
-        ln -s $HOME/dotfiles/.nixpkgs $HOME/.nixpkgs
+        ln -s ${homepath}/dotfiles/.nixpkgs ${homepath}/.nixpkgs
     fi
     if [ ! -d /Applications/kitty.app ]; then
         echo "Linking kitty..."
