@@ -20,6 +20,32 @@ let
     };
   };
   homepath = if pkgs.stdenv.isDarwin then "$HOME" else "/home/joerdav";
+  script = ''
+    echo ":: -> Running vim activationScript..."
+    # Handle mutable configs
+    if [ ! -e "${homepath}/.config/nvim/" ]; then
+      echo "Linking vim folders..."
+      ln -sf ${homepath}/dotfiles/config/nvim ${homepath}/.config/nvim
+    fi
+    if [ ! -f ${homepath}/.tmux.conf ]; then
+        echo "Linking tmux conf..."
+        ln -s ${homepath}/dotfiles/.tmux.conf ${homepath}/.tmux.conf
+    fi
+    if [ ! -f ${homepath}/.zshrc ]; then
+        echo "Linking zshrc..."
+        ln -s ${homepath}/dotfiles/.zshrc ${homepath}/.zshrc
+    fi
+  `` + pkgs.lib.optionalString pkgs.stdenv.isDarwin ``
+    if [ ! -f ${homepath}/.nixpkgs/darwin-configuration.nix ]; then
+        echo "Linking nixpkgs..."
+        ln -s ${homepath}/dotfiles/.nixpkgs ${homepath}/.nixpkgs
+    fi
+    if [ ! -d /Applications/kitty.app ]; then
+        echo "Linking kitty..."
+        cp -r /run/current-system/Applications/* /Applications/ >/dev/null 2>&1
+    fi
+  '';
+
 in
 {
   nixpkgs.config.allowUnfree = true;
@@ -35,30 +61,6 @@ in
   environment.systemPackages = [ python-with-global-packages ];
   programs.zsh.enable = true; # default shell on catalina
 
-  system.activationScripts.postUserActivation.text = ''
-    echo ":: -> Running vim activationScript..."
-    # Handle mutable configs
-    if [ ! -e "${homepath}/.config/nvim/" ]; then
-      echo "Linking vim folders..."
-      ln -sf ${homepath}/dotfiles/config/nvim ${homepath}/.config/nvim
-    fi
-    if [ ! -f ${homepath}/.tmux.conf ]; then
-        echo "Linking tmux conf..."
-        ln -s ${homepath}/dotfiles/.tmux.conf ${homepath}/.tmux.conf
-    fi
-    if [ ! -f ${homepath}/.zshrc ]; then
-        echo "Linking zshrc..."
-        ln -s ${homepath}/dotfiles/.zshrc ${homepath}/.zshrc
-    fi
-    if [ ! -f ${homepath}/.nixpkgs/darwin-configuration.nix ]; then
-        echo "Linking nixpkgs..."
-        ln -s ${homepath}/dotfiles/.nixpkgs ${homepath}/.nixpkgs
-    fi
-    if [ ! -d /Applications/kitty.app ]; then
-        echo "Linking kitty..."
-        cp -r /run/current-system/Applications/* /Applications/ >/dev/null 2>&1
-    fi
-
-  '';
+  system.activationScripts.postUserActivation.text = script;
   system.stateVersion = 4;
 }
