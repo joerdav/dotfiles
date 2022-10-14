@@ -11,7 +11,7 @@ let
       rev = "v0.0.110";
       sha256 = "0rpn2cq7hf0wi9x06bmsic8cp5v7ipkfdy1pgi0ivhqgyqabszv2";
     };
-    modSha256 = "1ryb8m407rijrwlxcpkwyayjf1raxi2qw4ndpjsi12q1bjhx0y33";
+    modSha256 = "14dtguu787VR8/sYA+9WaS6xr/dB6ZcUjOzDEkFDpH4=";
   };
 in
 {
