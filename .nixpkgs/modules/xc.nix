@@ -4,6 +4,7 @@ let
   xc = pkgs.buildGoModule {
     pname = "xc";
     version = "v0.0.110";
+    subPackages = ["cmd/xc"];
     src = pkgs.fetchFromGitHub {
       owner = "joerdav";
       repo = "xc";
