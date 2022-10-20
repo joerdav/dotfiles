@@ -38,6 +38,7 @@
     nodePackages.prettier
     nodePackages.typescript
     nodejs-14_x
+    obsidian
     oh-my-zsh
     pass
     protobuf

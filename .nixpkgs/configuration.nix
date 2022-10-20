@@ -44,10 +44,6 @@ let
         echo "Linking nixpkgs..."
         ln -s ${homepath}/dotfiles/.nixpkgs ${homepath}/.nixpkgs
     fi
-    if [ ! -d /Applications/kitty.app ]; then
-        echo "Linking kitty..."
-        cp -r /run/current-system/Applications/* /Applications/ >/dev/null 2>&1
-    fi
   '';
 
 in
@@ -55,6 +51,7 @@ in
   nixpkgs.config.allowUnfree = true;
   environment.variables = { EDITOR = "nvim"; };
   nixpkgs.overlays = [ ipythonFix ];
+  services.nix-daemon.enable = true;
 
   imports = [
     ./modules
@@ -64,6 +61,5 @@ in
   # $ nix-env -qaP | grep wget
   environment.systemPackages = [ python-with-global-packages ];
   programs.zsh.enable = true; # default shell on catalina
-
   system.activationScripts.postUserActivation.text = script;
 }
