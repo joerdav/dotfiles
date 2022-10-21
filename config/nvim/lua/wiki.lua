@@ -28,6 +28,11 @@ vim.api.nvim_create_user_command("Dy", function()
 	openday(os.time() - 24 * 60 * 60)
 end, {})
 
+vim.api.nvim_create_autocmd(
+    { "BufRead", "BufNewFile" },
+    { pattern = { "*.txt", "*.md", "*.tex" }, command = "setlocal spell" }
+)
+
 require("mkdnflow").setup({
 	mappings = {
 		MkdnDecreaseHeading = { "n", "=" },
