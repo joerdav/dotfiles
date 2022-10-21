@@ -36,6 +36,7 @@ vim.api.nvim_create_autocmd(
 require("mkdnflow").setup({
 	mappings = {
 		MkdnDecreaseHeading = { "n", "=" },
+		MkdnToggleToDo = {{'n', 'v'}, '<C-t>'},
 	},
 	links = {
 		transform_explicit = function(input)

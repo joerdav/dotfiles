@@ -34,6 +34,7 @@ opt.cursorcolumn = false
 opt.cursorline = false
 opt.pumheight = 10
 opt.lazyredraw = true
+opt.mouse = ""
 
 --- testing
 g.coverage_json_report_path = "coverage/coverage-final.json"
