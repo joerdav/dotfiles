@@ -16,7 +16,7 @@ let
     configure = {
       packages.myPlugins = with pkgs.vimPlugins; {
         start = [
-          (pluginGit "rafaelsq" "nvim-goc.lua" "7c03112ce77b7df2b124d46c1188cc3c66d06f66" "dpVZPbn6XipshTiNLTYFk+NAjvYm9Y3zYqJwBc5xg+o=")
+          (pluginGit "rafaelsq" "nvim-goc.lua" "7d23d820feeb30c6346b8a4f159466ee77e855fd" "lh+U0NtLYLmuCQIwStrJTCo32i8OuplGmUCzSnSJOa0=")
           (pluginGit "ray-x" "lsp_signature.nvim" "f7c308e99697317ea572c6d6bafe6d4be91ee164" "tbpYdH6MJWbMM6OZ0Kvw4MI15vlhEOvppz1CjqtaiGg=")
           (pluginGit "dkprice" "vim-easygrep" "d0c36a77cc63c22648e792796b1815b44164653a" "bL33/S+caNmEYGcMLNCanFZyEYUOUmSsedCVBn4tV3g=")
           (pluginGit "mhartington" "formatter.nvim" "51f10c8acc610d787cad2257224cee92b40216e5" "FGc6yVHhgQqjxXWkuznr2eXQLtu+DPDZNsqNxq7PU5Y=")

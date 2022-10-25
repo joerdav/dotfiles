@@ -3,6 +3,17 @@ local wikiloc = "~/log"
 
 vim.api.nvim_create_user_command("Wk", ":E " .. wikiloc, {})
 vim.api.nvim_create_user_command("Wf", ":Files " .. wikiloc, {})
+function draw(opts)
+	local file = wikiloc.."/diagrams/"..os.date("%Y-%m-%d-")..opts.args..".excalidraw"
+	local template = wikiloc .. "/templates/drawing.excalidraw"
+	os.execute("cp -n " .. template .. " " .. file)
+	os.execute("open " .. file)
+	local pos = vim.api.nvim_win_get_cursor(0)[2]
+	local line = vim.api.nvim_get_current_line()
+	local nline = line:sub(0, pos) .. '[['..file..']]' .. line:sub(pos + 1)
+	vim.api.nvim_set_current_line(nline)
+end
+vim.api.nvim_create_user_command("Draw", draw, {nargs="*"})
 function file_exists(file)
 	local f = io.open(file, "r")
 	if f then
