@@ -17,6 +17,7 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
  --color=fg+:#ffffff,bg+:#000000,hl+:#ffffff
  --color=info:#ffffff,prompt:#ffffff,pointer:#ffffff
  --color=marker:#ffffff,spinner:#ffffff,header:#ffffff'
+export CLICOLOR=1
 
 # Auto Completion
 fpath=(~/dotfiles/zsh-completion $fpath)
@@ -60,7 +61,6 @@ alias es="exercism submit"
 alias j="dir=\$(find ~/src -maxdepth 3 -name .git -type d -prune -exec dirname {} \; | fzf +m) && cd \"\$dir\""
 alias lg="nvim -c :G"
 alias lazygit="nvim -c :G"
-alias mate="kitty --config ~/.config/kitty/kittymate.conf"
 
 cw() {
   group=$(aws-vault exec $1 -- saw groups | fzf +m)

@@ -1,20 +1,19 @@
-local prett = function()
+local prettierd = function()
 	return {
 		exe = "prettierd",
 		args = { vim.api.nvim_buf_get_name(0) },
 		stdin = true,
 	}
 end
-
 local util = require("formatter.util")
 require("formatter").setup({
 	logging = false,
 	filetype = {
-		javascript = { prett },
-		javascriptreact = { prett },
-		typescriptreact = { prett },
-		typescript = { prett },
-		html = { prett },
+		javascript = { prettierd },
+		javascriptreact = { prettierd },
+		typescriptreact = { prettierd },
+		typescript = { prettierd },
+		html = { prettierd },
 		nix = {
 			function()
 				return {
@@ -34,7 +33,13 @@ require("formatter").setup({
 		go = {
 			function()
 				return {
-					exe = "gofmt",
+					exe = "gofumpt",
+					stdin = true,
+				}
+			end,
+			function()
+				return {
+					exe = "goimports",
 					stdin = true,
 				}
 			end,
@@ -57,6 +62,15 @@ require("formatter").setup({
 				return {
 					exe = "templ fmt",
 					stdin = true,
+				}
+			end,
+		},
+		c = {
+			function()
+				return {
+					exe = "clang-format",
+					stdin = true,
+					try_node_modules = true,
 				}
 			end,
 		},

@@ -4,8 +4,10 @@
   environment.systemPackages = with pkgs; [
     asciinema
     aws-vault
+    buf
     capnproto
     ccls
+    clang-tools
     delta
     discord
     entr
@@ -22,12 +24,12 @@
     gopls
     goreleaser
     gotools
+    gofumpt
     graphviz
     gv
     html-tidy
     htop
     jq
-    kitty
     lua
     luarocks
     ngrok
@@ -44,7 +46,7 @@
     protobuf
     ripgrep
     rust-analyzer
-    rustfmt
+    rustup
     silver-searcher
     ssm-session-manager-plugin
     stylua
@@ -52,7 +54,9 @@
     tmux
     tree
     unzip
+    upterm
     vscode
+    wezterm
     wget
     wrk
     yarn

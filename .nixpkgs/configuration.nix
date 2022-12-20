@@ -27,9 +27,17 @@ let
       echo "Linking vim folders..."
       ln -sf ${homepath}/dotfiles/config/nvim ${homepath}/.config/nvim
     fi
+    if [ ! -e "${homepath}/.tmux" ]; then
+      echo "Linking tmux folders..."
+      ln -sf ${homepath}/dotfiles/.tmux ${homepath}/.tmux
+    fi
     if [ ! -f ${homepath}/.tmux.conf ]; then
         echo "Linking tmux conf..."
         ln -s ${homepath}/dotfiles/.tmux.conf ${homepath}/.tmux.conf
+    fi
+    if [ ! -f ${homepath}/.wezterm.lua ]; then
+        echo "Linking wezterm conf..."
+        ln -s ${homepath}/dotfiles/.wezterm.lua ${homepath}/.wezterm.lua
     fi
     if [ ! -f ${homepath}/.zshrc ]; then
         echo "Linking zshrc..."

@@ -1,12 +1,12 @@
 map = require("map")
 
 --- move lines
-map("n", "<A-j>", "<cmd>m .+1<cr>==", { noremap = true })
-map("n", "<A-k>", "<cmd>m.-2<cr>==", { noremap = true })
-map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { noremap = true })
-map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { noremap = true })
-map("v", "<A-j>", ":m '>+1<cr>gv=gv", { noremap = true })
-map("v", "<A-k>", ":m '<-2<cr>gv=gv", { noremap = true })
+vim.keymap.set("n", "<A-k>", "<cmd>m .-2<CR>==")
+vim.keymap.set("n", "<A-j>", "<cmd>m .+1<CR>==")
+vim.keymap.set("i", "<A-j>", "<Esc><cmd>m .+1<CR>==gi")
+vim.keymap.set("i", "<A-k>", "<Esc><cmd>m .-2<CR>==gi")
+vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
 
 --- quick escape insert
 map("i", "jk", "<esc>", { silent = true, noremap = true })
