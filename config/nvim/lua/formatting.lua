@@ -1,19 +1,28 @@
 local prettierd = function()
 	return {
 		exe = "prettierd",
-		args = { vim.api.nvim_buf_get_name(0) },
+		args = {"--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)), '--single-quote'},
 		stdin = true,
 	}
 end
 local util = require("formatter.util")
 require("formatter").setup({
-	logging = false,
+	log_level = vim.log.levels.INFO,
 	filetype = {
 		javascript = { prettierd },
 		javascriptreact = { prettierd },
 		typescriptreact = { prettierd },
 		typescript = { prettierd },
 		html = { prettierd },
+		json = {
+			function()
+				return {
+					exe = "jq",
+					args = {"."},
+					stdin = true,
+				}
+			end,
+		},
 		nix = {
 			function()
 				return {
@@ -65,12 +74,30 @@ require("formatter").setup({
 				}
 			end,
 		},
+		cpp = {
+			function()
+				return {
+					exe = "clang-format",
+					stdin = true,
+					try_node_modules = true,
+				}
+			end,
+		},
 		c = {
 			function()
 				return {
 					exe = "clang-format",
 					stdin = true,
 					try_node_modules = true,
+				}
+			end,
+		},
+		["*"] = {
+			function()
+				return {
+					exe = "sed",
+					stdin = true,
+					args = { "[ \t]*$" },
 				}
 			end,
 		},

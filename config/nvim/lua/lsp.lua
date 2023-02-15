@@ -119,12 +119,13 @@ local on_attach = function(client, bufnr)
 	buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
 	buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
 	buf_set_keymap("n", "<leader>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
-	buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.format { async = true} <CR>", opts)
 	buf_set_keymap("n", "<leader>clr", "<cmd>lua <CR>", opts)
 	buf_set_keymap("n", "<leader>cln", "<cmd>lua vim.lsp.codelens.run()<CR>", opts)
 	vim.lsp.codelens.refresh()
 	print("LSP Attached!")
 end
+local format_group = vim.api.nvim_create_augroup("FormatGroup", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePost", { pattern = "*", command = "FormatWrite", group = format_group })
 configs.templ = {
 	default_config = {
 		cmd = { "templ", "lsp" },
@@ -133,13 +134,6 @@ configs.templ = {
 		settings = {},
 	},
 }
-
-vim.cmd([[
-augroup FormatAutogroup
-	autocmd!
-	autocmd BufWritePost * FormatWrite
-augroup END
-]])
 local server_settings = {
 	gopls = {
 		gopls = {
@@ -153,12 +147,8 @@ local server_settings = {
 			buildFlags = { "-tags=integration" },
 		},
 	},
-	tsserver = {
-		format = { enable = false },
-	},
 	eslint = {
 		enable = true,
-		format = { enable = true }, -- this will enable formatting
 		packageManager = "npm",
 		autoFixOnSave = true,
 		codeActionsOnSave = {
@@ -192,10 +182,6 @@ for _, lsp in ipairs(servers) do
 		opts.settings = server_settings[lsp]
 	end
 	nvim_lsp[lsp].setup(opts)
-end
-
-function TypescriptOrganizeImports()
-	vim.lsp.buf.execute_command({ command = "_typescript.organizeImports", arguments = { vim.fn.expand("%:p") } })
 end
 
 -- diagnostic

@@ -13,14 +13,18 @@ g.netrw_liststyle = 1
 --- generate neovim settings
 opt.splitbelow = true
 opt.splitright = true
+--opt.clipboard = "unnamedplus" -- always default to system clipboard
 opt.completeopt = { "menu", "menuone", "noselect" }
+opt.timeout = true -- turn on timeout
+opt.timeoutlen = 1000 -- set timeout to 1000
+opt.inccommand = "nosplit" -- turn on incremental substitution
 opt.switchbuf = { "useopen" }
 opt.fileencoding = "UTF-8"
-opt.number = false
+opt.number = true
 opt.showmode = false
 opt.ruler = true
 opt.showcmd = true
-opt.laststatus = 0
+opt.laststatus = 2 -- always display file name
 opt.ttyfast = true
 opt.autoread = true
 opt.autoindent = true
@@ -37,6 +41,8 @@ opt.pumheight = 10
 opt.lazyredraw = true
 opt.mouse = ""
 
+opt.wildmode = "longest,list,full"
+opt.wildmenu = true
 --- testing
 g.coverage_json_report_path = "coverage/coverage-final.json"
 g.coverage_sign_covered = "⦿"

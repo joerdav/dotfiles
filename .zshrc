@@ -76,6 +76,11 @@ fh() {
 feach() {
   find . -depth 2 -name go.mod -type f -exec dirname {} \; | xargs -L1 -I % zsh -c "echo %;cd %;$@"
 }
+bwcopy() {
+  if hash bw 2>/dev/null; then
+    bw get item "$(bw list items | jq '.[] | "\(.name) | username: \(.login.username) | id: \(.id)" ' | fzf-tmux | awk '{print $(NF -0)}' | sed 's/\"//g')" | jq '.login.password' | sed 's/\"//g' | pbcopy
+  fi
+}
 export NVM_DIR="$HOME/.nvm"
   [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
