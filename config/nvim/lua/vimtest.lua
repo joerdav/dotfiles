@@ -1,14 +1,18 @@
-map = require("map")
+map = require('map')
 
-vim.g["test#strategy"] = "vimux"
+vim.g['test#strategy'] = 'vimux'
+vim.cmd([[
+let test#go#gotest#options = {
+  \ 'all':   '-cover --coverprofile=coverage.out',
+\}
+]])
 
--- https://github.com/rafaelsq/nvim-goc.lua
-vim.opt.switchbuf = 'useopen'
-local goc = require'nvim-goc'
-goc.setup({ verticalSplit = false })
-
-vim.api.nvim_set_keymap('n', '<Leader>gcr', ':lua require("nvim-goc").Coverage()<CR>', {silent=true})
-vim.api.nvim_set_keymap('n', '<Leader>gcc', ':lua require("nvim-goc").ClearCoverage()<CR>', {silent=true})
-vim.api.nvim_set_keymap('n', '<Leader>gct', ':lua require("nvim-goc").CoverageFunc()<CR>', {silent=true})
-vim.api.nvim_set_keymap('n', '<Leader>gca', ':lua cf(false)<CR><CR>', {silent=true})
-vim.api.nvim_set_keymap('n', '<Leader>gcb', ':lua cf(true)<CR><CR>', {silent=true})
+require('coverage').setup {
+  commands = true, -- create commands
+  signs = {
+    -- use your own highlight groups or text markers
+    covered = { hl = 'String', text = '▎' },
+    uncovered = { hl = 'Constant', text = '▎' },
+  },
+}
+vim.g['gotests_template'] = ''

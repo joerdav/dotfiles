@@ -6,7 +6,7 @@
     ./apps.nix
     ./go.nix
     ./slides.nix
-    ./templ.nix
+    #./templ.nix
     #./xc.nix
   ];
 }

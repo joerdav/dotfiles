@@ -1,13 +1,13 @@
 local prettierd = function()
 	return {
 		exe = "prettierd",
-		args = {"--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)), '--single-quote'},
+		args = { "--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)), "--single-quote" },
 		stdin = true,
 	}
 end
 local util = require("formatter.util")
 require("formatter").setup({
-	log_level = vim.log.levels.INFO,
+	log_level = vim.log.levels.WARN,
 	filetype = {
 		javascript = { prettierd },
 		javascriptreact = { prettierd },
@@ -18,7 +18,7 @@ require("formatter").setup({
 			function()
 				return {
 					exe = "jq",
-					args = {"."},
+					args = { "." },
 					stdin = true,
 				}
 			end,
@@ -34,7 +34,7 @@ require("formatter").setup({
 		rust = {
 			function()
 				return {
-					exe = "rustfmt",
+					exe = "rustfmt --edition 2021",
 					stdin = true,
 				}
 			end,
@@ -66,14 +66,6 @@ require("formatter").setup({
 				}
 			end,
 		},
-		templ = {
-			function()
-				return {
-					exe = "templ fmt",
-					stdin = true,
-				}
-			end,
-		},
 		cpp = {
 			function()
 				return {
@@ -89,6 +81,14 @@ require("formatter").setup({
 					exe = "clang-format",
 					stdin = true,
 					try_node_modules = true,
+				}
+			end,
+		},
+		templ = {
+			function()
+				return {
+					exe = "templ fmt",
+					stdin = true,
 				}
 			end,
 		},

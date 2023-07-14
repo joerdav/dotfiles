@@ -1,0 +1,1 @@
+/Users/joe.davidson/src/joerdav/templ.vim/syntax/templ.vim

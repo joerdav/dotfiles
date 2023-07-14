@@ -5,8 +5,8 @@ export NVM_DIR="$HOME/.nvm"
   [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 export PATH="/run/current-system/sw/bin:$PATH"
+export PATH="$HOME/src/golang/go/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
-export PATH="$(yarn global bin):$PATH"
 export PATH="$PATH:$(go env GOPATH)/bin"
 export PATH="$PATH:$HOME/bin"
 export ZSH="$HOME/.oh-my-zsh"
@@ -23,7 +23,6 @@ export CLICOLOR=1
 fpath=(~/dotfiles/zsh-completion $fpath)
 autoload -Uz compinit
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C xc xc
 comp_last_updated=`date -r ~/.zcompdump +%s` &> /dev/null;
 now=$(date +%s)
 file_age=$((now - comp_last_updated))
@@ -81,15 +80,20 @@ bwcopy() {
     bw get item "$(bw list items | jq '.[] | "\(.name) | username: \(.login.username) | id: \(.id)" ' | fzf-tmux | awk '{print $(NF -0)}' | sed 's/\"//g')" | jq '.login.password' | sed 's/\"//g' | pbcopy
   fi
 }
+x() {
+  xc $(xc -s |  fzf --preview 'xc -d {} | glow --style dark')
+}
+eval "$(direnv hook zsh)"
 export NVM_DIR="$HOME/.nvm"
   [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
   [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C xc xc
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/joe/.sdkman"
 [[ -s "/home/joe/.sdkman/bin/sdkman-init.sh" ]] && source "/home/joe/.sdkman/bin/sdkman-init.sh"
 #zprof
 
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /Users/joe.davidson/go/bin/xc xc

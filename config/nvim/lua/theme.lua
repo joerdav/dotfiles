@@ -1,19 +1,36 @@
 local cmd = vim.cmd
+local dark = true
 require("nvim-treesitter.configs").setup({
 	highlight = {
 		enable = true,
 	},
 })
-cmd([[colorscheme dracula]])
-cmd([[hi Normal ctermbg=16 guibg=#000000]])
-cmd([[hi LineNr ctermbg=16 guibg=#000000]])
-cmd([[hi EndOfBuffer ctermbg=16 guibg=#000000]])
-cmd([[hi EndOfBuffer ctermbg=16 guibg=#000000]])
-cmd([[hi Pmenu guibg=NONE]])
+local colorscheme = "jellybeans"
+if dark then
+	cmd([[
+	  let g:jellybeans_overrides = {
+	  \    'background': { 'guibg': '000000' },
+	  \    'SignColumn': { 'guibg': '000000' },
+	  \}
+	  colorscheme jellybeans
+	]])
+else
+	cmd([[
+		let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+		let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+		set termguicolors
+		set background=light
+		let g:gruvbox_contrast_light='hard'
+		colorscheme gruvbox
+	]])
+	colorscheme = "gruvbox_light"
+end
 
 require("lualine").setup({
 	options = {
-		theme = "dracula-nvim",
+		component_separators = { left = "|", right = "|" },
+		section_separators = { left = "", right = "" },
+		theme = colorscheme,
 	},
 	extensions = { "man", "fugitive" },
 	sections = {

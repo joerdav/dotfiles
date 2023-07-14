@@ -3,14 +3,18 @@
 {
   environment.systemPackages = with pkgs; [
     asciinema # Terminal Recording
+    act
     aws-vault # AWS Profile Manager
     bitwarden-cli
     buf # Protobuf Framework
     capnproto # Protobuf Framework
     ccls # c Language Server
     clang-tools # clang tools, installed for formatter
+    cmake
+    cmake-language-server
     delta # syntax-highlighted git diff
     discord # Discord desktop app
+    direnv
     docker
     docker-machine
     entr # File watcher
@@ -21,6 +25,8 @@
     gh # Github CLI
     git # Source Control
     gitAndTools.gh # Github CLI
+    git-bug
+    glfw
     gnupg # PGP Implementation
     gomodifytags # Refactor tool
     google-cloud-sdk # GCP CLI
@@ -35,6 +41,9 @@
     jq # JSON Query
     lua # Lua runtime
     luarocks # Lua package managers
+    mdcat
+    minikube
+    kubectl
     ngrok # Temporarily host a port
     nix-prefetch # Get hashes of nix packages easily
     nixpkgs-fmt # Nix Formatter
@@ -48,6 +57,7 @@
       pass-import
     ])) # Wallet interface
     protobuf # Protobuf CLI
+    qrencode
     ripgrep # Multithreaded file search
     rust-analyzer # Rust Language Server
     rustup # Rust Installer
@@ -62,7 +72,7 @@
     wezterm # Terminal Emulator
     wget # wget command
     wrk # Load tester
-    yarn # Node package manager
+    #yarn # Node package manager
     zip # zup commpressed files
   ];
 }
