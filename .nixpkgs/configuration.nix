@@ -3,6 +3,7 @@
 let
   python-with-global-packages = pkgs.python3.withPackages (ps: with ps; [
     pip
+    nodeenv
   ]);
   ipythonFix = self: super: {
     python3 = super.python3.override {

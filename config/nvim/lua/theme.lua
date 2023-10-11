@@ -1,30 +1,45 @@
 local cmd = vim.cmd
 local dark = true
+local parser_install_dir = vim.fn.expand("~/treesitters")
+vim.fn.mkdir(parser_install_dir, "p")
+vim.opt.runtimepath:append(parser_install_dir)
+local treesitter_parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+treesitter_parser_config.templ = {
+	install_info = {
+		url = "https://github.com/vrischmann/tree-sitter-templ.git",
+		files = { "src/parser.c", "src/scanner.c" },
+		branch = "master",
+	},
+}
+
+vim.treesitter.language.register("templ", "templ")
+
+cmd[[
+	au BufRead,BufNewFile *.templ		setfiletype templ
+]]
+
 require("nvim-treesitter.configs").setup({
+	ensure_installed = {
+		"templ", "go"
+	},
 	highlight = {
 		enable = true,
+		additional_vim_regex_highlighting = false,
+	},
+	parser_install_dir = parser_install_dir,
+})
+
+require("themer").setup({
+	colorscheme = "jellybeans",
+	transparent = true,
+	styles = {
+		["function"] = { style = "italic" },
+		functionbuiltin = { style = "italic" },
+		variable = { style = "italic" },
+		variableBuiltIn = { style = "italic" },
+		parameter = { style = "italic" },
 	},
 })
-local colorscheme = "jellybeans"
-if dark then
-	cmd([[
-	  let g:jellybeans_overrides = {
-	  \    'background': { 'guibg': '000000' },
-	  \    'SignColumn': { 'guibg': '000000' },
-	  \}
-	  colorscheme jellybeans
-	]])
-else
-	cmd([[
-		let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-		let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-		set termguicolors
-		set background=light
-		let g:gruvbox_contrast_light='hard'
-		colorscheme gruvbox
-	]])
-	colorscheme = "gruvbox_light"
-end
 
 require("lualine").setup({
 	options = {

@@ -4,8 +4,7 @@ local g = vim.g
 local opt = vim.opt
 map = require("map")
 
---- leader
-g.mapleader = " "
+g.NERDCreateDefaultMappings = 0
 --- netrw settings
 g.netrw_banner = 0
 g.netrw_liststyle = 1

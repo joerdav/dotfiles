@@ -1,13 +1,9 @@
-local vim = vim
-local api = vim.api
-local mason = require("mason")
 local mason_lsp_config = require("mason-lspconfig")
 local lspconfig = require("lspconfig")
 local configs = require("lspconfig.configs")
 local cmp = require("cmp")
-local luasnip = require("luasnip")
 
-mason.setup({
+require("mason").setup({
 	ui = {
 		icons = {
 			package_installed = "✓",
@@ -21,6 +17,8 @@ require("mason-tool-installer").setup({
 	-- a list of all tools you want to ensure are installed upon
 	-- start; they should be the names Mason uses for each tool
 	ensure_installed = {
+		-- templ
+		"templ",
 		-- go
 		"golangci-lint",
 		"gopls",
@@ -39,13 +37,33 @@ require("mason-tool-installer").setup({
 		"bash-language-server",
 		"shellcheck",
 		"shfmt",
+		-- python
+		"jedi-language-server",
+		"flake8",
+		"black",
+		"isort",
+		"mypy",
+		"pylint",
+		-- terraform
+		"tflint",
+		--"terraform-ls",
 		-- javascript
 		"eslint-lsp",
-		"prettierd",
+		"prettier",
+		"eslint_d",
 		-- lua
+		"lua-language-server",
 		"stylua",
-		--c
-		"clangd",
+		-- "proto",
+		"buf",
+		-- misc
+		"editorconfig-checker",
+		"codespell",
+		"css-lsp",
+		"gitlint",
+		"json-lsp",
+		"sqlls",
+		"yaml-language-server",
 	},
 
 	-- if set to true this will check each tool for updates. If updates
@@ -66,15 +84,6 @@ require("mason-tool-installer").setup({
 	-- Default: 0
 	start_delay = 3000, -- 3 second delay
 })
-
-configs.templ = {
-	default_config = {
-		cmd = { "templ", "lsp" },
-		filetypes = { "templ" },
-		root_dir = lspconfig.util.root_pattern("go.mod", ".git"),
-		settings = {},
-	},
-}
 configs.lua_ls = {
 	default_config = {
 		cmd = { "lua-language-server" },
@@ -84,50 +93,70 @@ configs.lua_ls = {
 		settings = { Lua = { telemetry = { enable = false } } },
 	},
 }
-local server_settings = {
-	gopls = {
-		gopls = {
-			codelenses = {
-				generate = true, -- show the `go generate` lens.
-				gc_details = true, -- show a code lens toggling the display of gc's choices.
-				test = true,
-				upgrade_dependency = true,
-				tidy = true,
-			},
-			buildFlags = { "-tags=integration" },
-		},
-	},
-	eslint = {
-		enable = true,
-		packageManager = "npm",
-		autoFixOnSave = true,
-		codeActionsOnSave = {
-			mode = "all",
-			rules = { "!debugger", "!no-only-tests/*" },
-		},
-		lintTask = {
-			enable = true,
-		},
-	},
-}
-mason_lsp_config.setup()
 
+local on_attach = function(client, bufnr)
+	local opts = { buffer = bufnr, remap = false }
+
+	vim.keymap.set("n", "gd", function()
+		vim.lsp.buf.definition()
+	end, opts)
+	vim.keymap.set("n", "K", function()
+		vim.lsp.buf.hover()
+	end, opts)
+	vim.keymap.set("n", "<leader>vws", function()
+		vim.lsp.buf.workspace_symbol()
+	end, opts)
+	vim.keymap.set("n", "<leader>vd", function()
+		vim.diagnostic.open_float()
+	end, opts)
+	vim.keymap.set("n", "[d", function()
+		vim.diagnostic.goto_next()
+	end, opts)
+	vim.keymap.set("n", "]d", function()
+		vim.diagnostic.goto_prev()
+	end, opts)
+	vim.keymap.set("n", "<leader>vca", function()
+		vim.lsp.buf.code_action()
+	end, opts)
+	vim.keymap.set("n", "<leader>vrr", function()
+		vim.lsp.buf.references()
+	end, opts)
+	vim.keymap.set("n", "<leader>vrn", function()
+		vim.lsp.buf.rename()
+	end, opts)
+	vim.keymap.set("i", "<C-h>", function()
+		vim.lsp.buf.signature_help()
+	end, opts)
+end
+
+mason_lsp_config.setup()
 mason_lsp_config.setup_handlers({
-	function(server_name)
-		local opts = {}
-		if server_settings[server_name] then
-			opts.settings = server_settings[server_name]
-		end
-		lspconfig[server_name].setup(opts)
+	function(server_name) -- default handler (optional)
+		lspconfig[server_name].setup({
+			on_attach = on_attach,
+		})
+	end,
+	["gopls"] = function()
+		lspconfig.gopls.setup({
+			on_attach = on_attach,
+			settings = {
+				gopls = {
+					env = { GOFLAGS = "-tags=integration" },
+					codelenses = {
+						generate = true, -- show the `go generate` lens.
+						gc_details = true, -- show a code lens toggling the display of gc's choices.
+						test = true,
+						upgrade_dependency = true,
+						tidy = true,
+					},
+				},
+			},
+		})
 	end,
 })
-
 require("luasnip.loaders.from_snipmate").lazy_load({ paths = "~/.config/nvim/snippets" })
 
-local has_words_before = function()
-	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
+local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
 cmp.setup({
 	snippet = {
@@ -141,39 +170,10 @@ cmp.setup({
 		documentation = cmp.config.window.bordered(),
 	},
 	mapping = {
-		["<Tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_next_item()
-			elseif luasnip.expand_or_jumpable() then
-				luasnip.expand_or_jump()
-			elseif has_words_before() then
-				cmp.complete()
-			else
-				fallback()
-			end
-		end, { "i", "s" }),
-
-		["<S-Tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.select_prev_item()
-			elseif luasnip.jumpable(-1) then
-				luasnip.jump(-1)
-			else
-				fallback()
-			end
-		end, { "i", "s" }),
-		-- ["<tab>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-		["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-		["<Down>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-		["<Up>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
-		["<C-d>"] = cmp.mapping.scroll_docs(-4),
-		["<C-f>"] = cmp.mapping.scroll_docs(4),
-		["<C-Space>"] = cmp.mapping.complete(),
-		["<C-e>"] = cmp.mapping.close(),
-		["<CR>"] = cmp.mapping.confirm({
-			behavior = cmp.ConfirmBehavior.Replace,
-			select = true,
-		}),
+		["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
+		["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
+		["<C-y>"] = cmp.mapping.confirm({ select = true }),
+		["<C-Enter>"] = cmp.mapping.complete(),
 	},
 	sources = cmp.config.sources({
 		{ name = "nvim_lsp" },
@@ -199,39 +199,13 @@ cmp.setup.cmdline(":", {
 	}),
 })
 
-require("lsp_signature").setup({
-	bind = true,
-	floating_window = true,
-	floating_window_above_cur_line = true,
-	fix_pos = false,
-	hint_enable = false,
-	hint_prefix = "🐼 ",
-	hint_scheme = "String",
-	hi_parameter = "LspSignatureActiveParameter",
-	max_height = 12,
-	max_width = 120,
-	handler_opts = {
-		border = "none",
-	},
-	always_trigger = false,
-	auto_close_after = nil,
-	extra_trigger_chars = { "(", "," },
-	zindex = 200,
-	padding = " ",
-	transparency = nil,
-	shadow_blend = 36,
-	shadow_guibg = "Black",
-	timer_interval = 200,
-	toggle_key = nil,
-})
-
-local format_group = api.nvim_create_augroup("FormatGroup", { clear = true })
-api.nvim_create_autocmd(
+local format_group = vim.api.nvim_create_augroup("FormatGroup", { clear = true })
+vim.api.nvim_create_autocmd(
 	{ "BufRead", "BufNewFile" },
 	{ pattern = "*.md", command = "setlocal textwidth=120", group = format_group }
 )
-api.nvim_create_autocmd("BufWritePost", { pattern = "*", command = "FormatWrite", group = format_group })
-api.nvim_create_autocmd(
+vim.api.nvim_create_autocmd("BufWritePost", { pattern = "*", command = "FormatWrite", group = format_group })
+vim.api.nvim_create_autocmd(
 	{ "BufReadPost", "FileReadPost" },
 	{ pattern = "*", command = "normal zR", group = format_group }
 )
@@ -248,5 +222,11 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
 	},
 })
 vim.lsp.set_log_level("debug")
+vim.diagnostic.config({
+	virtual_text = true,
+})
 
-require("cmake-tools").setup {}
+require("cmake-tools").setup({})
+-- Copilot setup.
+vim.g.copilot_no_tab_map = true
+vim.g.copilot_assume_mapped = true

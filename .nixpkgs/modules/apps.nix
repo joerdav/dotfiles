@@ -47,11 +47,8 @@
     ngrok # Temporarily host a port
     nix-prefetch # Get hashes of nix packages easily
     nixpkgs-fmt # Nix Formatter
+    nodejs_20
     nmap # nmap command
-    nodePackages.node2nix # Node 2 Nix
-    nodePackages.prettier # TS Formatter
-    nodePackages.typescript # TS Compiler
-    nodejs-14_x # Node runtime
     oh-my-zsh # ZSH Wrapper
     (pass.withExtensions (ext: with ext; [
       pass-import
@@ -59,7 +56,6 @@
     protobuf # Protobuf CLI
     qrencode
     ripgrep # Multithreaded file search
-    rust-analyzer # Rust Language Server
     rustup # Rust Installer
     silver-searcher # AG Multithreaded file search
     ssm-session-manager-plugin # AWS SSM CLI

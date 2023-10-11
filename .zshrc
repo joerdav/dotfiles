@@ -1,14 +1,12 @@
-#zmodload zsh/zprof
+zmodload zsh/zprof
 
 # Environment Variables
-export NVM_DIR="$HOME/.nvm"
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 export PATH="/run/current-system/sw/bin:$PATH"
 export PATH="$HOME/src/golang/go/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$PATH:$(go env GOPATH)/bin"
 export PATH="$PATH:$HOME/bin"
+export PATH="$PATH:$HOME/dotfiles/scripts"
 export ZSH="$HOME/.oh-my-zsh"
 export VISUAL=vim
 export EDITOR="$VISUAL"
@@ -52,7 +50,16 @@ RPROMPT=''
 
 # oh-my-zsh
 plugins=(git web-search)
+ZSH_WEB_SEARCH_ENGINES=(
+  phind "https://www.phind.com/agent?q="
+)
 source $ZSH/oh-my-zsh.sh
+
+SECRETS=~/.secrets
+if test -f "$SECRETS"; then
+  source $SECRETS
+fi
+
 
 
 alias watch="ag -l | entr"
@@ -60,6 +67,7 @@ alias es="exercism submit"
 alias j="dir=\$(find ~/src -maxdepth 3 -name .git -type d -prune -exec dirname {} \; | fzf +m) && cd \"\$dir\""
 alias lg="nvim -c :G"
 alias lazygit="nvim -c :G"
+alias ph="web_search phind"
 
 cw() {
   group=$(aws-vault exec $1 -- saw groups | fzf +m)
@@ -84,16 +92,11 @@ x() {
   xc $(xc -s |  fzf --preview 'xc -d {} | glow --style dark')
 }
 eval "$(direnv hook zsh)"
-export NVM_DIR="$HOME/.nvm"
-  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
-  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
 
-autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /Users/joe.davidson/go/bin/xc xc
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/joe/.sdkman"
 [[ -s "/home/joe/.sdkman/bin/sdkman-init.sh" ]] && source "/home/joe/.sdkman/bin/sdkman-init.sh"
-#zprof
 
-autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /Users/joe.davidson/go/bin/xc xc
+#zprof

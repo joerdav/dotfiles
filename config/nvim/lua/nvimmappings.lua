@@ -1,35 +1,63 @@
-map = require("map")
+vim.g.mapleader = " "
 
 --- move lines
-vim.keymap.set("n", "<A-k>", "<cmd>m .-2<CR>==")
-vim.keymap.set("n", "<A-j>", "<cmd>m .+1<CR>==")
-vim.keymap.set("i", "<A-j>", "<Esc><cmd>m .+1<CR>==gi")
-vim.keymap.set("i", "<A-k>", "<Esc><cmd>m .-2<CR>==gi")
-vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv")
-vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv")
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
 --- quick escape insert
 map("i", "jk", "<esc>", { silent = true, noremap = true })
 
---- fix strange issue with keyboard
-map("i", "<A-3>", "#", { silent = true, noremap = true })
+--- useful movement
+vim.keymap.set("n", "J", "mzJ`z")
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")
 
-local opts = { noremap = true, silent = true }
----- lsp
-map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opts)
-map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
-map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-map("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
-map("n", "gK", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
-map("n", "<space>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
-map("n", "<space>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
-map("n", "<space>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", opts)
-map("n", "<space>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
-map("n", "<space>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-map("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
-map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-map("n", "<space>e", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
-map("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
-map("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-map("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
-map("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+--- past without overwriting
+vim.keymap.set("x", "<leader>p", [["_dP]])
+
+-- next greatest remap ever : asbjornHaland
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
+vim.keymap.set("n", "<leader>Y", [["+Y]])
+vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
+
+--- fix strange issue with keyboard
+vim.keymap.set("i", "<A-3>", "#", { silent = true, noremap = true })
+
+--- harpoon
+local mark = require("harpoon.mark")
+local ui = require("harpoon.ui")
+
+vim.keymap.set("n", "<leader>a", mark.add_file)
+vim.keymap.set("n", "<C-e>", ui.toggle_quick_menu)
+vim.keymap.set("n", "<C-h>", function()
+	ui.nav_file(1)
+end)
+vim.keymap.set("n", "<C-j>", function()
+	ui.nav_file(2)
+end)
+vim.keymap.set("n", "<C-k>", function()
+	ui.nav_file(3)
+end)
+vim.keymap.set("n", "<C-l>", function()
+	ui.nav_file(4)
+end)
+
+--- copilot
+
+vim.keymap.set("i", "<C-]>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+
+--- stop recording every time I press Q
+vim.keymap.set("n", "Q", "<nop>")
+
+--- sessionizer
+vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+
+--- trouble
+vim.keymap.set("n", "<leader>xx", "<cmd>TroubleToggle<cr>", { silent = true, noremap = true })
+vim.keymap.set("n", "<leader>xw", "<cmd>Trouble lsp_workspace_diagnostics<cr>", { silent = true, noremap = true })
+vim.keymap.set("n", "<leader>xd", "<cmd>Trouble lsp_document_diagnostics<cr>", { silent = true, noremap = true })
+vim.keymap.set("n", "<leader>xl", "<cmd>Trouble loclist<cr>", { silent = true, noremap = true })
+vim.keymap.set("n", "<leader>xq", "<cmd>Trouble quickfix<cr>", { silent = true, noremap = true })
