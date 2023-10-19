@@ -46,7 +46,12 @@ end)
 
 --- copilot
 
-vim.keymap.set("i", "<C-]>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+vim.keymap.set(
+	"i",
+	"<C-]>",
+	'copilot#Accept("<CR>")',
+	{ noremap = true, silent = true, expr = true, replace_keycodes = false }
+)
 
 --- stop recording every time I press Q
 vim.keymap.set("n", "Q", "<nop>")

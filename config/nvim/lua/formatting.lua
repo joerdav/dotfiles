@@ -1,19 +1,7 @@
-local prettierd = function()
-	return {
-		exe = "prettier",
-		args = { "--stdin-filepath", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0)), "--single-quote" },
-		stdin = true,
-	}
-end
 local util = require("formatter.util")
 require("formatter").setup({
 	log_level = vim.log.levels.WARN,
 	filetype = {
-		javascript = { prettierd },
-		javascriptreact = { prettierd },
-		typescriptreact = { prettierd },
-		typescript = { prettierd },
-		html = { prettierd },
 		json = {
 			function()
 				return {

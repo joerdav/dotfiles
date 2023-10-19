@@ -71,6 +71,8 @@ let
           vim-visual-multi # Multi cursor
           vim-test
 
+          undotree
+
           gotests-vim
 
           (pluginGit "nvim-lualine" "lualine.nvim" "d8c392dd75778d6258da4e7c55522e94ac389732" "s4bIwha2ZWvF5jYuIfUBcT/JKK9gcMH0vms2pOO5uKs=") # Status line
@@ -89,7 +91,7 @@ let
           (pluginGit "williamboman" "mason-lspconfig.nvim" "e2705063f395b44f676cd26596a11007a2cbd3bd" "pqaCBOXr79RUjmyqHk7qq69VeQduzUz4tIn2bakoCBI=")
           (pluginGit "WhoIsSethDaniel" "mason-tool-installer.nvim" "a6c4d7df448a78b0a05fd2065bef11ed52bee51c" "bedQamYO2m0MXJYfMyCq5WcZZLGE7kPK8wpLo5qH/aA=")
           (pluginGit "Civitasv" "cmake-tools.nvim" "c0cb2c98ed03800a1b1f7fc29d4b783aec96f530" "KT+ujjWDddkgAharow7thOhL7r4o91NQFNkKnXk3y7E=")
-          (pluginGit "github" "copilot.vim" "b6e5624351ba735e25eb8864d7d22819aad00606" "sha256-EA9SNPRIIBG9eoV299h+5/AcF/NJYS8izsurLEW31bc=")
+          (pluginGit "github" "copilot.vim" "59c02393c99335392e9cb572cb47951bbb4de6be" "OWWFqFl+7SUtn2rarANYA4Ja1iwusHdaWa3hgQzeJnA=")
         ];
         opt = [
         ];
