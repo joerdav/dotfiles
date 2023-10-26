@@ -13,7 +13,6 @@
     cmake
     cmake-language-server
     delta # syntax-highlighted git diff
-    discord # Discord desktop app
     direnv
     docker
     docker-machine
@@ -45,7 +44,6 @@
     mdcat
     minikube
     kubectl
-    ngrok # Temporarily host a port
     nix-prefetch # Get hashes of nix packages easily
     nixpkgs-fmt # Nix Formatter
     nodejs_20

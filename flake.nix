@@ -40,7 +40,7 @@
     {
       darwinConfigurations = {
         joe-mac = darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
+          system = "x86_64-darwin";
           pkgs = getPkgsForSystem "aarch64-darwin";
           modules = [ ./.nixpkgs/darwin-configuration.nix ];
         };
