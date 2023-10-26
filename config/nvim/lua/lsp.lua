@@ -1,22 +1,68 @@
-local mason_lsp_config = require("mason-lspconfig")
-local lspconfig = require("lspconfig")
-local configs = require("lspconfig.configs")
-local cmp = require("cmp")
+local lsp = require("lsp-zero")
 
-require("mason").setup({
-	ui = {
-		icons = {
-			package_installed = "✓",
-			package_pending = "➜",
-			package_uninstalled = "✗",
-		},
-	},
+lsp.preset("recommended")
+
+local cmp = require('cmp')
+local cmp_select = { behavior = cmp.SelectBehavior.Select }
+local cmp_mappings = lsp.defaults.cmp_mappings({
+	['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+	['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+	['<C-y>'] = cmp.mapping.confirm({ select = true }),
+	["<C-Space>"] = cmp.mapping.complete(),
 })
-require("mason-tool-installer").setup({
 
-	-- a list of all tools you want to ensure are installed upon
-	-- start; they should be the names Mason uses for each tool
+
+
+cmp_mappings['<Tab>'] = nil
+cmp_mappings['<S-Tab>'] = nil
+
+local min_keyword_length = 5
+
+cmp.setup({
+	window = {
+		completion = cmp.config.window.bordered(),
+		documentation = cmp.config.window.bordered(),
+	},
+	mapping = cmp_mappings,
+	sources = {
+		{ name = "nvim_lua" },
+		{ name = "nvim_lsp" },
+		{ name = "buffer",  keyword_length = min_keyword_length },
+		{ name = "path",    keyword_length = min_keyword_length },
+	},
+
+})
+
+
+lsp.set_preferences({
+	suggest_lsp_servers = false,
+	sign_icons = {
+		error = 'E',
+		warn = 'W',
+		hint = 'H',
+		info = 'I'
+	}
+})
+
+lsp.on_attach(function(client, bufnr)
+	local opts = { buffer = bufnr, remap = false }
+
+	vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+	vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+	vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
+	vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+	vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
+	vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+	vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
+	vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
+	vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+	vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+end)
+
+
+require('mason-tool-installer').setup {
 	ensure_installed = {
+		"htmx-lsp",
 		-- templ
 		"templ",
 		-- go
@@ -51,9 +97,6 @@ require("mason-tool-installer").setup({
 		"eslint-lsp",
 		"prettier",
 		"eslint_d",
-		-- lua
-		"lua-language-server",
-		"stylua",
 		-- "proto",
 		"buf",
 		-- rust
@@ -65,160 +108,49 @@ require("mason-tool-installer").setup({
 		"gitlint",
 		"json-lsp",
 		"sqlls",
-		"yaml-language-server",
+		-- lua
+		"lua_ls",
 	},
-
-	-- if set to true this will check each tool for updates. If updates
-	-- are available the tool will be updated. This setting does not
-	-- affect :MasonToolsUpdate or :MasonToolsInstall.
-	-- Default: false
-	auto_update = true,
-
-	-- automatically install / update on startup. If set to false nothing
-	-- will happen on startup. You can use :MasonToolsInstall or
-	-- :MasonToolsUpdate to install tools and check for updates.
-	-- Default: true
+	auto_update = false,
 	run_on_start = true,
-
-	-- set a delay (in ms) before the installation starts. This is only
-	-- effective if run_on_start is set to true.
-	-- e.g.: 5000 = 5 second delay, 10000 = 10 second delay, etc...
-	-- Default: 0
 	start_delay = 3000, -- 3 second delay
-})
-configs.lua_ls = {
-	default_config = {
-		cmd = { "lua-language-server" },
-		filetypes = { "lua" },
-		single_file_support = true,
-		log_level = vim.lsp.protocol.MessageType.Warning,
-		settings = { Lua = { telemetry = { enable = false } } },
-	},
+	debounce_hours = 5,
 }
 
-local on_attach = function(client, bufnr)
-	local opts = { buffer = bufnr, remap = false }
-
-	vim.keymap.set("n", "gd", function()
-		vim.lsp.buf.definition()
-	end, opts)
-	vim.keymap.set("n", "K", function()
-		vim.lsp.buf.hover()
-	end, opts)
-	vim.keymap.set("n", "<leader>vws", function()
-		vim.lsp.buf.workspace_symbol()
-	end, opts)
-	vim.keymap.set("n", "<leader>vd", function()
-		vim.diagnostic.open_float()
-	end, opts)
-	vim.keymap.set("n", "[d", function()
-		vim.diagnostic.goto_next()
-	end, opts)
-	vim.keymap.set("n", "]d", function()
-		vim.diagnostic.goto_prev()
-	end, opts)
-	vim.keymap.set("n", "<leader>vca", function()
-		vim.lsp.buf.code_action()
-	end, opts)
-	vim.keymap.set("n", "<leader>vrr", function()
-		vim.lsp.buf.references()
-	end, opts)
-	vim.keymap.set("n", "<leader>vrn", function()
-		vim.lsp.buf.rename()
-	end, opts)
-	vim.keymap.set("i", "<C-h>", function()
-		vim.lsp.buf.signature_help()
-	end, opts)
-end
-
-mason_lsp_config.setup()
-mason_lsp_config.setup_handlers({
-	function(server_name) -- default handler (optional)
-		lspconfig[server_name].setup({
-			on_attach = on_attach,
-		})
-	end,
-	["gopls"] = function()
-		lspconfig.gopls.setup({
-			on_attach = on_attach,
-			settings = {
-				gopls = {
-					env = { GOFLAGS = "-tags=integration" },
-					codelenses = {
-						generate = true, -- show the `go generate` lens.
-						gc_details = true, -- show a code lens toggling the display of gc's choices.
-						test = true,
-						upgrade_dependency = true,
-						tidy = true,
-					},
-				},
-			},
-		})
-	end,
-})
-require("luasnip.loaders.from_snipmate").lazy_load({ paths = "~/.config/nvim/snippets" })
-
-local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
-cmp.setup({
-	snippet = {
-		-- REQUIRED - you must specify a snippet engine
-		expand = function(args)
-			require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-		end,
+require('mason').setup({})
+require('mason-lspconfig').setup({
+	ensure_installed = {
 	},
-	window = {
-		completion = cmp.config.window.bordered(),
-		documentation = cmp.config.window.bordered(),
-	},
-	mapping = {
-		["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
-		["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
-		["<C-y>"] = cmp.mapping.confirm({ select = true }),
-		["<C-Enter>"] = cmp.mapping.complete(),
-	},
-	sources = cmp.config.sources({
-		{ name = "nvim_lsp" },
-		{ name = "luasnip" },
-	}),
-})
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline("/", {
-	sources = {
-		{ name = "buffer" },
+	handlers = {
+		lsp.default_setup,
 	},
 })
 
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(":", {
-	sources = cmp.config.sources({
-		{ name = "path" },
-	}, {
-		{ name = "cmdline" },
-	}),
-})
+require('lspconfig').htmx.setup {
+	filetypes = { 'html', 'templ' },
+}
 
----- diagnostic
-local signs = { Error = " ", Warning = " ", Hint = " ", Information = " " }
+lsp.setup()
 
-for type, icon in pairs(signs) do
-	local hl = "LspDiagnosticsSign" .. type
-	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-	virtual_text = {
-		signs = true,
-	},
-})
-vim.lsp.set_log_level("debug")
 vim.diagnostic.config({
-	virtual_text = true,
+	virtual_text = true
 })
 
-require("cmake-tools").setup({})
+
 -- Copilot setup.
 vim.g.copilot_no_tab_map = true
 vim.g.copilot_assume_mapped = true
+
+-- Format current buffer using LSP.
+vim.api.nvim_create_autocmd(
+	{
+		"BufEnter"
+	},
+	{
+		callback = function(args)
+			if args.file:find("aviva-verde", 1, true) then
+				vim.b['copilot_enabled'] = 0
+			end
+		end,
+	}
+)

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, globalBuildInputs ? [], ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -35,6 +35,7 @@
     gotools # Common Go Tools
     gofumpt # Stricter Go Formatter
     graphviz # Code defined graphs
+    gradle
     gv # PDF Viewer
     html-tidy # HTML Formatter
     htop # Advanced top command

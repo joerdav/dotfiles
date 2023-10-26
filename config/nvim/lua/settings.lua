@@ -1,8 +1,9 @@
-local cmd = vim.cmd
-local fn = vim.fn
 local g = vim.g
 local opt = vim.opt
-map = require("map")
+
+local parser_install_dir = vim.fn.expand("~/treesitters")
+vim.fn.mkdir(parser_install_dir, "p")
+vim.opt.runtimepath:append(parser_install_dir)
 
 g.NERDCreateDefaultMappings = 0
 --- netrw settings
