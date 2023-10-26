@@ -57,7 +57,6 @@ let
 
 in
 {
-  nixpkgs.config.allowUnfree = true;
   environment.variables = { EDITOR = "nvim"; };
   nixpkgs.overlays = [ ipythonFix ];
   services.nix-daemon.enable = true;

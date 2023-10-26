@@ -1,4 +1,4 @@
-{ pkgs, globalBuildInputs ? [], ... }:
+{ pkgs, lib, globalBuildInputs ? [], ... }:
 
 {
   environment.systemPackages = with pkgs; [

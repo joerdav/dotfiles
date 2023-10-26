@@ -26,6 +26,7 @@
     let
       getPkgsForSystem = system:
         import nixpkgs {
+		configs.allowUnfree = true;
           overlays = [
             (self: super: {
               dynamotableviz = dynamotableviz.packages.${system}.dynamotableviz;
