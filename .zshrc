@@ -1,9 +1,9 @@
 zmodload zsh/zprof
 
 # Environment Variables
-export PATH="/run/current-system/sw/bin:$PATH"
-export PATH="$HOME/src/golang/go/bin:$PATH"
+export PATH="$PATH:/run/current-system/sw/bin"
 export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/src/golang/go/bin:$PATH"
 export PATH="$PATH:$(go env GOPATH)/bin"
 export PATH="$PATH:$HOME/bin"
 export PATH="$PATH:$HOME/dotfiles/scripts"
@@ -16,6 +16,8 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
  --color=info:#ffffff,prompt:#ffffff,pointer:#ffffff
  --color=marker:#ffffff,spinner:#ffffff,header:#ffffff'
 export CLICOLOR=1
+GPG_TTY=$(tty)
+export GPG_TTY
 
 # Auto Completion
 fpath=(~/dotfiles/zsh-completion $fpath)
@@ -60,6 +62,7 @@ if test -f "$SECRETS"; then
   source $SECRETS
 fi
 
+bindkey -s ^f "tmux-sessionizer\n"
 
 
 alias watch="ag -l | entr"

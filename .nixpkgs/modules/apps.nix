@@ -20,6 +20,7 @@
     exercism # Code Kata cli
     ffmpeg # Video Encoder
     fzf # Fuzzy Filter
+    gcc
     gdb # Debugger
     gh # Github CLI
     git # Source Control
@@ -29,7 +30,6 @@
     gnupg # PGP Implementation
     gomodifytags # Refactor tool
     google-cloud-sdk # GCP CLI
-    gopls # Go Language Server
     goreleaser # Go Release Framework
     gotools # Common Go Tools
     gofumpt # Stricter Go Formatter
@@ -38,6 +38,8 @@
     gv # PDF Viewer
     html-tidy # HTML Formatter
     htop # Advanced top command
+    jflex
+    jdk17
     jq # JSON Query
     lua # Lua runtime
     luarocks # Lua package managers
