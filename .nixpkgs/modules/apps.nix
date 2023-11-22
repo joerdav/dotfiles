@@ -20,7 +20,6 @@
     exercism # Code Kata cli
     ffmpeg # Video Encoder
     fzf # Fuzzy Filter
-    gcc
     gdb # Debugger
     gh # Github CLI
     git # Source Control
@@ -66,6 +65,7 @@
     tree # Show a tree of files
     unzip # unzip compressed files
     upterm # Terminal session sharer
+    vhs # VHS Record
     wezterm # Terminal Emulator
     wget # wget command
     wrk # Load tester

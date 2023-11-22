@@ -114,7 +114,11 @@ require("lazy").setup({
 
 	"dkprice/vim-easygrep",
 
+	{ "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
+
 	"joerdav/templ.vim",
+
+	require("whichkeyconfig"),
 
 	require("undotreeconfig"),
 
@@ -130,7 +134,7 @@ require("lazy").setup({
 
 	require("formatterconfig"),
 
-	require("fzfconfig"),
+	require("telescopeconfig"),
 
 	require("lsp"),
 
