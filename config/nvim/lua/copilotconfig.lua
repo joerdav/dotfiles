@@ -10,19 +10,6 @@ local M = {
 			'copilot#Accept("<CR>")',
 			{ noremap = true, silent = true, expr = true, replace_keycodes = false }
 		)
-		-- Format current buffer using LSP.
-		vim.api.nvim_create_autocmd(
-			{
-				"BufEnter"
-			},
-			{
-				callback = function(args)
-					if args.file:find("aviva-verde", 1, true) then
-						vim.b['copilot_enabled'] = 0
-					end
-				end,
-			}
-		)
 	end
 }
 
