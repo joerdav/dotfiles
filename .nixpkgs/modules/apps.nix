@@ -4,6 +4,7 @@
   environment.systemPackages = with pkgs; [
     asciinema # Terminal Recording
     act
+    atuin # shell history manager
     aws-vault # AWS Profile Manager
     bitwarden-cli
     buf # Protobuf Framework
@@ -50,6 +51,7 @@
     nodejs_20
     nmap # nmap command
     oh-my-zsh # ZSH Wrapper
+    opam # OCaml Package Manager
     (pass.withExtensions (ext: with ext; [
       pass-import
     ])) # Wallet interface

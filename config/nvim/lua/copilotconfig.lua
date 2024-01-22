@@ -6,7 +6,7 @@ local M = {
 		vim.g.copilot_assume_mapped = true
 		vim.keymap.set(
 			"i",
-			"<C-]>",
+			"<C-l>",
 			'copilot#Accept("<CR>")',
 			{ noremap = true, silent = true, expr = true, replace_keycodes = false }
 		)

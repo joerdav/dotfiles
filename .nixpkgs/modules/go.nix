@@ -1,190 +1,52 @@
-{ lib
-, fetchurl
-, tzdata
-, substituteAll
-, iana-etc
-, Security
-, Foundation
-, xcbuild
-, mailcap
-, pkgsBuildTarget
-, threadsCross
-, testers
-, skopeo
-, buildGo121Module
-, pkgs
-, ...
-}:
+{ pkgs, ... }:
 
 let
-   useGccGoBootstrap = pkgs.stdenv.buildPlatform.isMusl;
-  goBootstrap = if useGccGoBootstrap then pkgs.buildPackages.gccgo12 else pkgs.buildPackages.callPackage ./bootstrap121.nix { };
+  toGoKernel = platform:
+    if platform.isDarwin then "darwin"
+    else platform.parsed.kernel.name;
+  hashes = {
+    # Use `print-hashes.sh ${version}` to generate the list below
+    # https://raw.githubusercontent.com/NixOS/nixpkgs/master/pkgs/development/compilers/go/print-hashes.sh
+    darwin-amd64 = "b314de9f704ab122c077d2ec8e67e3670affe8865479d1f01991e7ac55d65e70";
+    darwin-arm64 = "3aca44de55c5e098de2f406e98aba328898b05d509a2e2a356416faacf2c4566";
+    linux-386 = "0e6f378d9b072fab0a3d9ff4d5e990d98487d47252dba8160015a61e6bd0bcba";
+    linux-amd64 = "d0398903a16ba2232b389fb31032ddf57cac34efda306a0eebac34f0965a0742";
+    linux-arm64 = "f3d4548edf9b22f26bbd49720350bbfe59d75b7090a1a2bff1afad8214febaf3";
+    linux-armv6l = "e377a0004957c8c560a3ff99601bce612330a3d95ba3b0a2ae144165fc87deb1";
+    linux-loong64 = "e484cdc55221f7e7853666ed4f0ef462eef46b52253f84df60a7b908416060cb";
+    linux-mips = "6311d8ccd6ff9ce3cc8ecc72017d651d23e7325943fa72f4b65cd750be8aacd8";
+    linux-mips64 = "6d9cb425dc61f60bff41e2dec873abbcc5b8dbd1d32997f994d707b662f3c363";
+    linux-mips64le = "92f7933d997c589b4f506c6b3cc5b27ff43b294c3a2d40bf4d7eeaf375f92afb";
+    linux-mipsle = "9bb9f938457411042074a57284d40a086e63f7778f86e1632e018bbc38948c92";
+    linux-ppc64 = "e34dcc1df804bf8bac035ace3304f23696a9138a79a398dce981d89072d3ae23";
+    linux-ppc64le = "e938ffc81d8ebe5efc179240960ba22da6a841ff05d5cab7ce2547112b14a47f";
+    linux-riscv64 = "87b21c06573617842ca9e00b954bc9f534066736a0778eae594ac54b45a9e8b7";
+    linux-s390x = "be7338df8e5d5472dfa307b0df2b446d85d001b0a2a3cdb1a14048d751b70481";
+  };
 
-  skopeoTest = skopeo.override { buildGoModule = buildGo121Module; };
-
-  goarch = platform: {
-    "aarch64" = "arm64";
-    "arm" = "arm";
-    "armv5tel" = "arm";
-    "armv6l" = "arm";
-    "armv7l" = "arm";
+  toGoCPU = platform: {
     "i686" = "386";
-    "mips" = "mips";
-    "mips64el" = "mips64le";
-    "mipsel" = "mipsle";
-    "powerpc64le" = "ppc64le";
-    "riscv64" = "riscv64";
-    "s390x" = "s390x";
     "x86_64" = "amd64";
-  }.${platform.parsed.cpu.name} or (throw "Unsupported system: ${platform.parsed.cpu.name}");
+    "aarch64" = "arm64";
+    "armv6l" = "armv6l";
+    "armv7l" = "armv6l";
+    "powerpc64le" = "ppc64le";
+  }.${platform.parsed.cpu.name} or (throw "Unsupported CPU ${platform.parsed.cpu.name}");
 
-  # We need a target compiler which is still runnable at build time,
-  # to handle the cross-building case where build != host == target
-  targetCC = pkgsBuildTarget.targetPackages.stdenv.cc;
+  toGoPlatform = platform: "${toGoKernel platform}-${toGoCPU platform}";
 
-  isCross = pkgs.stdenv.buildPlatform != pkgs.stdenv.targetPlatform;
-  go = pkgs.stdenv.mkDerivation (finalAttrs: {
-  pname = "go";
-  version = "1.21.4";
-
-  src = fetchurl {
-    url = "https://go.dev/dl/go${finalAttrs.version}.src.tar.gz";
-    hash = "sha256-R7Jqg9K2WjwcG8rOJztpvuSaentRaKdgTe09JqN714c=";
-  };
-
-  strictDeps = true;
-  buildInputs = [ ]
-    ++ lib.optionals pkgs.stdenv.isLinux [ pkgs.stdenv.cc.libc.out ]
-    ++ lib.optionals (pkgs.stdenv.hostPlatform.libc == "glibc") [ pkgs.stdenv.cc.libc.static ];
-
-  depsTargetTargetPropagated = lib.optionals pkgs.stdenv.targetPlatform.isDarwin [ Foundation Security xcbuild ];
-
-  depsBuildTarget = lib.optional isCross targetCC;
-
-  depsTargetTarget = lib.optional pkgs.stdenv.targetPlatform.isWindows threadsCross.package;
-
-  postPatch = ''
-    patchShebangs .
-  '';
-
-  patches = [
-    (substituteAll {
-      src = ./iana-etc-1.17.patch;
-      iana = iana-etc;
-    })
-    # Patch the mimetype database location which is missing on NixOS.
-    # but also allow static binaries built with NixOS to run outside nix
-    (substituteAll {
-      src = ./mailcap-1.17.patch;
-      inherit mailcap;
-    })
-    # prepend the nix path to the zoneinfo files but also leave the original value for static binaries
-    # that run outside a nix server
-    (substituteAll {
-      src = ./tzdata-1.19.patch;
-      inherit tzdata;
-    })
-    ./remove-tools-1.11.patch
-    ./go_no_vendor_checks-1.21.patch
-  ];
-
-  GOOS = pkgs.stdenv.targetPlatform.parsed.kernel.name;
-  GOARCH = goarch pkgs.stdenv.targetPlatform;
-  # GOHOSTOS/GOHOSTARCH must match the building system, not the host system.
-  # Go will nevertheless build a for host system that we will copy over in
-  # the install phase.
-  GOHOSTOS = pkgs.stdenv.buildPlatform.parsed.kernel.name;
-  GOHOSTARCH = goarch pkgs.stdenv.buildPlatform;
- 
-  # {CC,CXX}_FOR_TARGET must be only set for cross compilation case as go expect those
-  # to be different from CC/CXX
-  CC_FOR_TARGET =
-    if isCross then
-      "${targetCC}/bin/${targetCC.targetPrefix}cc"
-    else
-      null;
-  CXX_FOR_TARGET =
-    if isCross then
-      "${targetCC}/bin/${targetCC.targetPrefix}c++"
-    else
-      null;
-
-  GOARM = toString (lib.intersectLists [ (pkgs.stdenv.hostPlatform.parsed.cpu.version or "") ] [ "5" "6" "7" ]);
-  GO386 = "softfloat"; # from Arch: don't assume sse2 on i686
-  CGO_ENABLED = 1;
-
-  GOROOT_BOOTSTRAP = if useGccGoBootstrap then goBootstrap else "${goBootstrap}/share/go";
-
-  buildPhase = ''
-    runHook preBuild
-    export GOCACHE=$TMPDIR/go-cache
-    # this is compiled into the binary
-    export GOROOT_FINAL=$out/share/go
-
-    export PATH=$(pwd)/bin:$PATH
-
-    ${lib.optionalString isCross ''
-    # Independent from host/target, CC should produce code for the building system.
-    # We only set it when cross-compiling.
-    export CC=${pkgs.buildPackages.stdenv.cc}/bin/cc
-    ''}
-    ulimit -a
-
-    pushd src
-    ./make.bash
-    popd
-    runHook postBuild
-  '';
-
-  preInstall = ''
-    # Contains the wrong perl shebang when cross compiling,
-    # since it is not used for anything we can deleted as well.
-    rm src/regexp/syntax/make_perl_groups.pl
-  '' + (if (pkgs.stdenv.buildPlatform.system != pkgs.stdenv.hostPlatform.system) then ''
-    mv bin/*_*/* bin
-    rmdir bin/*_*
-    ${lib.optionalString (!(finalAttrs.GOHOSTARCH == finalAttrs.GOARCH && finalAttrs.GOOS == finalAttrs.GOHOSTOS)) ''
-      rm -rf pkg/${finalAttrs.GOHOSTOS}_${finalAttrs.GOHOSTARCH} pkg/tool/${finalAttrs.GOHOSTOS}_${finalAttrs.GOHOSTARCH}
-    ''}
-  '' else lib.optionalString (pkgs.stdenv.hostPlatform.system != pkgs.stdenv.targetPlatform.system) ''
-    rm -rf bin/*_*
-    ${lib.optionalString (!(finalAttrs.GOHOSTARCH == finalAttrs.GOARCH && finalAttrs.GOOS == finalAttrs.GOHOSTOS)) ''
-      rm -rf pkg/${finalAttrs.GOOS}_${finalAttrs.GOARCH} pkg/tool/${finalAttrs.GOOS}_${finalAttrs.GOARCH}
-    ''}
-  '');
-
-  installPhase = ''
-    runHook preInstall
-    mkdir -p $GOROOT_FINAL
-    cp -a bin pkg src lib misc api doc go.env $GOROOT_FINAL
-    mkdir -p $out/bin
-    ln -s $GOROOT_FINAL/bin/* $out/bin
-    runHook postInstall
-  '';
-
-  disallowedReferences = [ goBootstrap ];
-
-  passthru = {
-    inherit goBootstrap skopeoTest;
-    tests = {
-      skopeo = testers.testVersion { package = skopeoTest; };
-      version = testers.testVersion {
-        package = finalAttrs.finalPackage;
-        command = "go version";
-        version = "go${finalAttrs.version}";
-      };
+  platform = toGoPlatform pkgs.stdenv.hostPlatform;
+  version = "1.21.0";
+  go = pkgs.stdenv.mkDerivation {
+    pname = "go";
+    version = "${version}";
+    src = pkgs.fetchurl {
+      url = "https://golang.org/dl/go${version}.${platform}.tar.gz";
+      sha256 = hashes.${platform} or (throw "Missing Go bootstrap hash for platform ${platform}");
     };
+    builder = ./go-install.sh;
+    system = builtins.currentSystem;
   };
-
-  meta = with lib; {
-    changelog = "https://go.dev/doc/devel/release#go${lib.versions.majorMinor finalAttrs.version}";
-    description = "The Go Programming language";
-    homepage = "https://go.dev/";
-    license = licenses.bsd3;
-    maintainers = teams.golang.members;
-    platforms = platforms.darwin ++ platforms.linux;
-  };
-});
 in
 {
   environment.systemPackages = [ go ];

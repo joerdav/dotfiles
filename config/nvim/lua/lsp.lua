@@ -77,6 +77,10 @@ local M = {
 				{ silent = true, noremap = true, desc = "[L]SP [C]ode [A]ction" })
 			vim.keymap.set("n", "<leader>lrn", function() vim.lsp.buf.rename() end,
 				{ silent = true, noremap = true, desc = "[L]SP [R]e[N]ame" })
+			vim.keymap.set("n", "<leader>lcl", function() vim.lsp.codelens.refresh() end,
+				{ silent = true, noremap = true, desc = "[L]SP [C]ode[L]ens Refresh" })
+			vim.keymap.set("n", "<leader>lcr", function() vim.lsp.codelens.run() end,
+				{ silent = true, noremap = true, desc = "[L]SP [C]odelens [R]un" })
 
 			vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end,
 				{ silent = true, noremap = true, desc = "[G]oto [D]efinition" })
@@ -167,6 +171,43 @@ local M = {
 								allow_incremental_sync = false,
 							}
 						end,
+						settings = {
+							usePlaceholders = true,
+							gofumpt = true,
+							analyses = {
+								nilness = true,
+								unusedparams = true,
+								unusedwrite = true,
+								useany = true,
+							},
+							gopls = {
+								buildFlags = { "-tags=integration" },
+								codelenses = {
+									gc_details = true,
+									generate = true,
+									regenerate_cgo = true,
+									run_govulncheck = true,
+									test = true,
+									tidy = true,
+									upgrade_dependency = true,
+									vendor = true,
+								},
+							},
+							experimentalPostfixCompletions = true,
+							completeUnimported = true,
+							staticcheck = true,
+							directoryFilters = { "-.git", "-node_modules" },
+							semanticTokens = true,
+							hints = {
+								assignVariableTypes = true,
+								compositeLiteralFields = true,
+								compositeLiteralTypes = true,
+								constantValues = true,
+								functionTypeParameters = true,
+								parameterNames = true,
+								rangeVariableTypes = true,
+							},
+						},
 					}
 				end,
 				["lua_ls"] = function()

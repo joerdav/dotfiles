@@ -22,13 +22,7 @@ let
       sha256 = "wst6YwtTJbR65+jijSSgsS9Isv1/vO9uAjuoUg6tVQc=";
     };
   };
-  nixpkgs_master = import
-    (fetchTarball "https://github.com/nixos/nixpkgs/archive/5c9080f33ab2013a2008ffc74fc7ea452895dbb5.tar.gz")
-    { };
-
-  neovim9 = nixpkgs_master.neovim;
-
-  nvim = neovim9.override {
+  nvim = pkgs.neovim.override {
     vimAlias = true;
     configure = {
       packages.myPlugins = with pkgs.vimPlugins; {

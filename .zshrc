@@ -95,6 +95,7 @@ x() {
   xc $(xc -s |  fzf --preview 'xc -d {} | glow --style dark')
 }
 eval "$(direnv hook zsh)"
+eval "$(atuin init zsh)"
 
 complete -o nospace -C /Users/joe.davidson/go/bin/xc xc
 
@@ -103,3 +104,4 @@ export SDKMAN_DIR="/home/joe/.sdkman"
 [[ -s "/home/joe/.sdkman/bin/sdkman-init.sh" ]] && source "/home/joe/.sdkman/bin/sdkman-init.sh"
 
 #zprof
+
