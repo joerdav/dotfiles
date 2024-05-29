@@ -1,5 +1,7 @@
-local M = {
+return {
 	"github/copilot.vim",
+	enabled = false,
+	event = "VeryLazy",
 	config = function()
 		-- Copilot setup.
 		vim.g.copilot_no_tab_map = true
@@ -10,7 +12,5 @@ local M = {
 			'copilot#Accept("<CR>")',
 			{ noremap = true, silent = true, expr = true, replace_keycodes = false }
 		)
-	end
+	end,
 }
-
-return M

@@ -51,7 +51,6 @@
     nodejs_20
     nmap # nmap command
     oh-my-zsh # ZSH Wrapper
-    opam # OCaml Package Manager
     (pass.withExtensions (ext: with ext; [
       pass-import
     ])) # Wallet interface
@@ -59,6 +58,12 @@
     qrencode
     ripgrep # Multithreaded file search
     rustup # Rust Installer
+    SDL2
+    SDL2_image
+    SDL2_mixer
+    SDL2_ttf
+    SDL2_net
+    SDL2_gfx
     silver-searcher # AG Multithreaded file search
     ssm-session-manager-plugin # AWS SSM CLI
     stylua # Lua Formatter
@@ -66,9 +71,8 @@
     tmux # Terminal Multiplexer
     tree # Show a tree of files
     unzip # unzip compressed files
-    upterm # Terminal session sharer
     vhs # VHS Record
-    wezterm # Terminal Emulator
+    #wezterm # Terminal Emulator
     wget # wget command
     wrk # Load tester
     #yarn # Node package manager

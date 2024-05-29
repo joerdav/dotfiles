@@ -46,8 +46,14 @@ unsetopt PROMPT_SP
 zstyle ':vcs_info:git*' formats "[%b]"
 precmd() {
     vcs_info
+    if [ -n $vcs_info_msg_0_ ]; then
+    TICKET_RESULT=$(c -p)
+	    if [ -n "$TICKET_RESULT" ]; then
+		TICKET_RESULT="[$TICKET_RESULT]"
+	    fi
+    fi
 }
-PROMPT='[%?][%~% ]${vcs_info_msg_0_}%B$%b '
+PROMPT='[%?][%~% ]${vcs_info_msg_0_}${TICKET_RESULT}%B$%b '
 RPROMPT=''
 
 # oh-my-zsh
@@ -71,6 +77,7 @@ alias j="dir=\$(find ~/src -maxdepth 3 -name .git -type d -prune -exec dirname {
 alias lg="nvim -c :G"
 alias lazygit="nvim -c :G"
 alias ph="web_search phind"
+alias gvim="nvim --listen 127.0.0.1:55644"
 
 cw() {
   group=$(aws-vault exec $1 -- saw groups | fzf +m)

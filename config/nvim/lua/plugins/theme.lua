@@ -1,8 +1,8 @@
-local M = {
-	theme = {
+return {
+	{
 		"rebelot/kanagawa.nvim",
 		config = function()
-			require('kanagawa').setup({
+			require("kanagawa").setup({
 				colors = {
 					theme = {
 						all = {
@@ -15,9 +15,9 @@ local M = {
 				},
 			})
 			vim.cmd("colorscheme kanagawa-wave")
-		end
+		end,
 	},
-	lualine = {
+	{
 		"nvim-lualine/lualine.nvim",
 		dependencies = { "rebelot/kanagawa.nvim" },
 		config = function()
@@ -45,22 +45,31 @@ local M = {
 					lualine_z = {},
 				},
 			})
-		end
+		end,
 	},
-	treesitter = {
+	{
 		"nvim-treesitter/nvim-treesitter",
 		config = function()
 			local parser_install_dir = vim.fn.expand("~/treesitters")
 			vim.fn.mkdir(parser_install_dir, "p")
-			vim.opt.runtimepath:append(parser_install_dir)
+			vim.opt.runtimepath:prepend(parser_install_dir)
 
-			require 'nvim-treesitter.configs'.setup {
+			--local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+			--parser_config.templ = {
+			--install_info = {
+			--url = "~/src/joerdav/tree-sitter-templ", -- local path or git repo
+			--files = { "src/parser.c", "src/scanner.c" }, -- note that some parsers also require src/scanner.c or src/scanner.cc
+			---- optional entries:
+			--branch = "master", -- default branch in case of git repo if different from master
+			--},
+			--}
+
+			require("nvim-treesitter.configs").setup({
 				-- A list of parser names, or "all"
 				ensure_installed = { "vimdoc", "javascript", "typescript", "c", "lua", "rust" },
 
-				ignore_install = {},
+				ignore_install = { "norg" },
 				modules = {},
-
 
 				-- Install parsers synchronously (only applied to `ensure_installed`)
 				sync_install = false,
@@ -80,19 +89,7 @@ local M = {
 					-- Instead of true it can also be a list of languages
 					additional_vim_regex_highlighting = false,
 				},
-			}
-			local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-			parser_config.templ = {
-				install_info = {
-					url = "~/src/joerdav/tree-sitter-templ", -- local path or git repo
-					files = { "src/parser.c", "src/scanner.c" }, -- note that some parsers also require src/scanner.c or src/scanner.cc
-				},
-				filetype = "templ", -- if filetype does not match the parser name
-			}
-			vim.treesitter.language.register('templ', 'templ')
-		end
-	}
+			})
+		end,
+	},
 }
-
-
-return M
